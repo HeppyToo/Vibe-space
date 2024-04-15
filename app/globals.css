@@ -6,7 +6,12 @@ html,
 body,
 :root {
   height: 100%;
-  @apply bg-neutral-900/70;
+  @apply bg-black;
+  /*@apply bg-neutral-900/70;*/
+}
+
+* {
+  @apply box-border list-none p-0 m-0 scroll-smooth;
 }
 
 .hidden-scrollbar {

@@ -19,7 +19,7 @@ export const Header = ({ label }: HeaderProps) => {
             )}>
                 Authentication
             </h1>
-            <p className='text-muted-foreground text-sm'>
+            <p className='text-muted-foreground text-sm text-gray-500'>
                 {label}
             </p>
         </div>

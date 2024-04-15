@@ -77,7 +77,7 @@ export const RegisterForum = () => {
                     </div>
                     <FormError massage={error}/>
                     <FormSuccess massage={success}/>
-                    <Button type='submit' className='w-full' disabled={isPending}>
+                    <Button type='submit' className='w-full bg-muted-foreground/70' disabled={isPending}>
                         Create an account
                     </Button>
                 </form>
