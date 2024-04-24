@@ -14,8 +14,14 @@ import {FormError} from "@/components/form-error";
 import {FormSuccess} from "@/components/form-success";
 import {login} from "@/action/login";
 import {useState, useTransition} from "react";
+import {useSearchParams} from "next/navigation";
 
 export const LoginForum = () => {
+    const searchParams = useSearchParams();
+    const urlError = searchParams.get('error') === "OAuthAccountNotLinked"
+        ? "Email already in use with different provider"
+        : "";
+
     const [error, setError] = useState<string | undefined>('')
     const [success, setSuccess] = useState<string | undefined>('')
     const [isPending, startTransition] = useTransition()
@@ -34,8 +40,8 @@ export const LoginForum = () => {
 
         startTransition(() => {
             login(values).then((data) => {
-                setError(data.error)
-                setSuccess(data.success)
+                setError(data?.error)
+                setSuccess(data?.success)
             })
 
         })
@@ -65,9 +71,9 @@ export const LoginForum = () => {
                             </FormItem>
                         )}/>
                     </div>
-                    <FormError massage={error}/>
+                    <FormError massage={error || urlError}/>
                     <FormSuccess massage={success}/>
-                    <Button type='submit' className='w-full bg-muted-foreground/70' disabled={isPending}>
+                    <Button type='submit' className='w-full bg-muted-foreground/70 hover:border border-muted-foreground/70' disabled={isPending}>
                         Login
                     </Button>
                 </form>

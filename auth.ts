@@ -12,14 +12,22 @@ export const {
     signIn,
     signOut,
 } = NextAuth({
-    callbacks: {
-        async signIn({user}) {
-            if(!user.id) {
-                return false;
+    pages: {
+        signIn: '/auth/login',
+        error: '/auth/error',
+    },
+    events: {
+        async linkAccount({ user }) {
+            if (user.id) {
+                await db.user.update({
+                    where: { id: user.id },
+                    data: { emailVerified: new Date()},
+                })
             }
-
-            const existingUser = await getUserById(user.id);
-
+        }
+    },
+    callbacks: {
+        async signIn() {
             return true;
         },
         async session({token, session}) {
