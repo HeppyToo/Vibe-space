@@ -17,17 +17,27 @@ export const {
         error: '/auth/error',
     },
     events: {
-        async linkAccount({ user }) {
+        async linkAccount({user}) {
             if (user.id) {
                 await db.user.update({
-                    where: { id: user.id },
-                    data: { emailVerified: new Date()},
+                    where: {id: user.id},
+                    data: {emailVerified: new Date()},
                 })
             }
         }
     },
     callbacks: {
-        async signIn() {
+        async signIn({user, account}) {
+            if (account?.provider !== 'credentials') return true;
+
+            if(!user.id) {
+                return false;
+            }
+
+            const existingUser = await getUserById(user.id);
+
+            if (!existingUser?.emailVerified) return false;
+
             return true;
         },
         async session({token, session}) {
