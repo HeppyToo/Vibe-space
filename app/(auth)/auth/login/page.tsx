@@ -1,9 +1,9 @@
-import {LoginForum} from "@/components/auth/login-forum";
+import {LoginForm} from "@/components/auth/login-form";
 
 const LoginPage = () => {
     return(
         <div>
-            <LoginForum/>
+            <LoginForm/>
         </div>
     )
 }

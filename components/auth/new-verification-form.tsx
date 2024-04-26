@@ -17,7 +17,7 @@ export const NewVerificationForm = () => {
     const token = searchParams.get("token");
 
     const onSubmit = useCallback(() => {
-        if(success || error) return;
+        if (success || error) return;
 
         if (!token) {
             setError("Missing token!")
@@ -26,9 +26,13 @@ export const NewVerificationForm = () => {
 
         newVerification(token)
             .then((data) => {
-            setSuccess(data.success);
-            setError(data.error)
-        }).catch(() => {
+                if (data.success) {
+                    setSuccess(data.success);
+                }
+                if (data.error) {
+                    setError(data.error);
+                }
+            }).catch(() => {
             setError("Something went wrong!")
         });
     }, [token])
