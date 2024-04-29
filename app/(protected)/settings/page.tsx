@@ -8,12 +8,10 @@ const onClick = () => {
 }
 
 const SettingsPage = () => {
-    const user = useCurrentUser()
     return (
-        <div className='text-white p-10 rounded-xl bg-white'>
-            {JSON.stringify(user)}
+        <div className='flex justify-center p-10 rounded-xl bg-white w-[600px]'>
             <form>
-                <button onClick={onClick} type='submit'>
+                <button onClick={onClick} type='submit' className="text-black">
                     Sign Out
                 </button>
             </form>
