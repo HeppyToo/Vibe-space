@@ -4,7 +4,7 @@ interface FormSuccessProps {
     massage?: string;
 }
 
-export const FormSuccess = ({massage}: FormSuccessProps) => {
+export const FormSuccess: React.FC<FormSuccessProps> = ({massage}) => {
     if(!massage) return null;
 
     return (

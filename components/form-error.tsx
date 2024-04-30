@@ -4,7 +4,7 @@ interface FormErrorProps {
     massage?: string;
 }
 
-export const FormError = ({massage}: FormErrorProps) => {
+export const FormError: React.FC<FormErrorProps> = ({massage}) => {
     if(!massage) return null;
 
     return (
