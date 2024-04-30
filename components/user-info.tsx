@@ -10,7 +10,7 @@ interface UserInfoProps {
 
 export const UserInfo = ({user, label}: UserInfoProps) => {
     return (
-        <Card className="w-[600px] shadow-md cursor-auto">
+        <Card className="w-[600px] shadow-md cursor-auto bg-black border-slate-800/40 text-white bg-black border-slate-800/40 text-white">
             <CardHeader>
                 <p className="text-2xl font-semibold text-center">
                     {label}
@@ -22,7 +22,7 @@ export const UserInfo = ({user, label}: UserInfoProps) => {
                 <UserInfoSection name="Email" value={user?.email || "N/A"}/>
                 <UserInfoSection name="Role" value={user?.role || "N/A"}/>
 
-                <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm border-slate-600">
                     <p className="text-sm font-medium">
                         Two Factor Authentication
                     </p>

@@ -37,7 +37,7 @@ const AdminPage = () => {
         }
 
     return (
-        <Card className="w-[600px]">
+        <Card className="w-[600px] bg-black border-slate-800/40 text-white">
             <CardHeader>
                 <p className="text-2xl font-semibold text-center">
                     Admin
@@ -47,7 +47,7 @@ const AdminPage = () => {
                 <RoleGate allowedRoles={UserRole.ADMIN}>
                     <FormSuccess massage="You allowed to see this content!"/>
                 </RoleGate>
-                <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
+                <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md border-slate-600">
                     <p className="text-sm font-medium">
                         Admin-only API Route
                     </p>
@@ -55,7 +55,7 @@ const AdminPage = () => {
                         Click to test
                     </Button>
                 </div>
-                <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md">
+                <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-md  border-slate-600">
                     <p className="text-sm font-medium">
                         Admin-only Server Action
                     </p>

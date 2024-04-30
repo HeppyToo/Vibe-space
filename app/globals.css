@@ -5,8 +5,8 @@
 html,
 body,
 :root {
-  height: 100%;
-  @apply bg-black;
+  min-height: 100%;
+  @apply bg-gradient-to-br from-black to-[#0f0f0f];
   /*@apply bg-neutral-900/70;*/
 }
 

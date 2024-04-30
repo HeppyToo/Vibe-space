@@ -58,7 +58,7 @@ const SettingsPage = () => {
     }
 
     return (
-        <Card className="w-[600px]">
+        <Card className="w-[600px] bg-black border-slate-800/40 text-white">
             <CardHeader>
                     <p className="text-2xl font-semibold text-center flex gap-3 justify-center items-center">
                         <CiSettings/> Settings
@@ -115,7 +115,7 @@ const SettingsPage = () => {
                                                 <SelectValue placeholder="Select a role"/>
                                             </SelectTrigger>
                                         </FormControl>
-                                        <SelectContent>
+                                        <SelectContent  className="bg-[#1F1F22] text-white border-2">
                                             <SelectItem value={UserRole.ADMIN}>
                                                 Admin
                                             </SelectItem>
@@ -129,7 +129,7 @@ const SettingsPage = () => {
                             )}/>
                             {user?.isOAuth === false && (<>
                             <FormField control={form.control} name="isTwoFactorEnabled" render={({field}) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm">
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm text-white bg-[#1F1F22] border-0">
                                     <div className="space-y-0.5">
                                         <FormLabel>Two Factor Authentication</FormLabel>
                                         <FormDescription>
