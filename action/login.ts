@@ -7,6 +7,7 @@ import { db } from '@/lib/db';
 import {LoginSchema} from "@/schemas";
 import {DEFAULT_LOGIN_REDIRECT} from "@/routes";
 import {signIn} from "@/auth";
+import bcrypt from "bcryptjs";
 import {getUserByEmail} from "@/data/user";
 import {sendTwoFactorTokenEmail, sendVerificationEmail} from "@/lib/mail";
 import {generateTwoFactorToken, generateVerificationToken} from "@/lib/tokens";
@@ -26,6 +27,11 @@ export const login = async (values: z.infer<typeof LoginSchema>, callbackUrl?: s
 
     if(!existingUser || !existingUser.email || !existingUser.password) {
         return {error: "Email does not exist!"}
+    }
+
+    const isPasswordMatch = await bcrypt.compare(password, existingUser.password);
+    if (!isPasswordMatch) {
+        return {error: "Invalid password!"}
     }
 
     if(!existingUser.emailVerified) {

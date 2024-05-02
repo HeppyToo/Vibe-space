@@ -17,7 +17,7 @@ export default function Page() {
                     "text-6xl font-semibold text-white drop-shadow-md",
                     font.className,
                 )}>
-                    🔐 Auth
+                    Hello, user!
                 </h1>
                 <p className="text-white text-lg">
                     A simple authentication service
