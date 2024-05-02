@@ -8,6 +8,7 @@ import {getUserByEmail, getUserById} from "@/data/user";
 import {db} from "@/lib/db";
 import {generateVerificationToken} from "@/lib/tokens";
 import {sendVerificationEmail} from "@/lib/mail";
+import {unstable_update} from "@/auth";
 
 export const settings = async (values: z.infer<typeof SettingsSchema>) => {
     const user = await currentUser()
@@ -60,12 +61,22 @@ export const settings = async (values: z.infer<typeof SettingsSchema>) => {
         values.newPassword = undefined;
     }
 
-    await db.user.update({
+    const updatedUser = await db.user.update({
         where: { id: dbUser.id },
         data: {
             ...values
         }
     });
+
+    unstable_update({
+        user: {
+            name: updatedUser.name,
+            email: updatedUser.email,
+            isTwoFactorEnabled: updatedUser.isTwoFactorEnabled,
+            role: updatedUser.role
+
+        }
+    })
 
     return { success: "Settings updated!" }
 }

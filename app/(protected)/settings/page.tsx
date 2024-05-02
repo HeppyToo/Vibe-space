@@ -41,7 +41,7 @@ const SettingsPage = () => {
         }
     })
 
-    const onSubmut = (values: z.infer<typeof SettingsSchema>) => {
+    const onSubmit = (values: z.infer<typeof SettingsSchema>) => {
         startTransition(() => {
             settings(values)
                 .then((data) => {
@@ -66,7 +66,7 @@ const SettingsPage = () => {
             </CardHeader>
             <CardContent>
                 <Form {...form}>
-                    <form className="space-y-6" onSubmit={form.handleSubmit(onSubmut)}>
+                    <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
                         <div className="space-y-4">
                             <FormField control={form.control} name="name" render={({field}) => (
                                 <FormItem>
@@ -129,7 +129,7 @@ const SettingsPage = () => {
                             )}/>
                             {user?.isOAuth === false && (<>
                             <FormField control={form.control} name="isTwoFactorEnabled" render={({field}) => (
-                                <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm text-white bg-[#1F1F22] border-0">
+                                <FormItem className="flex flex-row items-center justify-between rounded-lg p-3 shadow-sm text-white bg-[#1F1F22] border-0">
                                     <div className="space-y-0.5">
                                         <FormLabel>Two Factor Authentication</FormLabel>
                                         <FormDescription>

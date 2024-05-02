@@ -13,6 +13,7 @@ export const {
     auth,
     signIn,
     signOut,
+    unstable_update
 } = NextAuth({
     pages: {
         signIn: '/auth/login',
@@ -61,14 +62,11 @@ export const {
                 session.user.role = token.role as UserRole;
             }
 
-            if (session.user) {
-                session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
-            }
-
             if(session.user) {
                 session.user.name = token.name;
                 session.user.email = token.email ? token.email : '';
                 session.user.isOAuth = token.isOAuth as boolean;
+                session.user.isTwoFactorEnabled = token.twoFactorEnabled as boolean;
             }
 
             return session;
@@ -89,7 +87,8 @@ export const {
             token.twoFactorEnabled = existingUser.isTwoFactorEnabled;
 
             return token;
-        }
+        },
+
     },
     adapter: PrismaAdapter(db),
     session: {strategy: 'jwt'},
