@@ -1,14 +1,15 @@
 import { Poppins } from "next/font/google";
 
-import {Button} from "@/components/ui/button";
-import {LoginButton} from "@/components/auth/login-button";
 import {cn} from "@/lib/utils";
+import {currentUser} from "@/lib/auth";
 
 const font = Poppins({
     subsets: ["latin"],
     weight: ["600"]
 })
-export default function Page() {
+const Home = async () => {
+    const user = await currentUser()
+
     return (
         <main
             className="flex h-screen flex-col items-center justify-center">
@@ -17,12 +18,12 @@ export default function Page() {
                     "text-6xl font-semibold text-white drop-shadow-md",
                     font.className,
                 )}>
-                    Hello, user!
                 </h1>
                 <p className="text-white text-lg">
-                    A simple authentication service
                 </p>
             </div>
         </main>
     )
 }
+
+export default Home
