@@ -3,7 +3,7 @@ interface ContainerProps {
 }
 
 export const Container = ({children}: ContainerProps) => {
-    return <div>
+    return <div className="h-full">
         {children}
     </div>
 }
