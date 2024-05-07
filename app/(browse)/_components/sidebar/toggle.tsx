@@ -28,9 +28,9 @@ export const Toggle = () => {
             )}
             {!collapsed && (
                 <div className="mt-4 p-3 pl-4 mb-2 flex items-center w-full">
-                    <p>
+                    <div>
                         <Logo/>
-                    </p>
+                    </div>
                     <Hint label={label} side="right" asChild>
                         <Button
                             onClick={onCollapse}
@@ -50,7 +50,7 @@ export const ToggleSkeleton = () => {
     return (
         <div className="mt-3 pl-6 mb-2 hidden lg:flex items-center justify-between w-full bg-black h-20 rounded-xl">
             <Skeleton className="w-[150px] h-[50px] bg-[#1f1f1f]" />
-            <Skeleton className="h-6 w-6 bg-[#1f1f1f]" />
+            <Skeleton className="h-6 w-6 bg-[#1f1f1f] mr-5" />
         </div>
     );
 };

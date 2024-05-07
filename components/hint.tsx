@@ -19,9 +19,9 @@ export const Hint = ({ label, children, asChild, side, align }: HintProps) => {
     return (
         <TooltipProvider>
             <Tooltip delayDuration={0}>
-                <TooltipTrigger asChild={asChild}>{children}</TooltipTrigger>
+                <TooltipTrigger asChild={asChild} className="hover:bg-[#1f1f1f] hover:text-white">{children}</TooltipTrigger>
                 <TooltipContent
-                    className="text-black bg-white"
+                    className="text-white border border-slate-800/40 bg-[#1f1f1f]"
                     side={side}
                     align={align}
                 >

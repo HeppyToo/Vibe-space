@@ -6,6 +6,7 @@ import {sidebarLinks} from "@/constants";
 
 import {LinkItem, LinkItemSkeleton} from "@/app/(browse)/_components/sidebar/link-item";
 import {useCurrentUser} from "@/hooks/use-carrent-user";
+import {ReportProblem} from "@/app/(browse)/_components/sidebar/report-problem";
 
 interface SidebarLink {
     Icon: React.ElementType;
@@ -26,6 +27,7 @@ export const Links = () => {
                         </li>
                     )
                 })}
+                <ReportProblem/>
                 <LinkItem image={user?.image || undefined} label="Profile" route="/account"/>
             </ul>
         </div>
@@ -35,7 +37,7 @@ export const Links = () => {
 export const LinksSkeleton = () => {
     return (
         <ul className="px-2 rounded-xl bg-black">
-            {[...Array(8)].map((_, i) => (
+            {[...Array(9)].map((_, i) => (
                 <LinkItemSkeleton key={i} />
             ))}
         </ul>
