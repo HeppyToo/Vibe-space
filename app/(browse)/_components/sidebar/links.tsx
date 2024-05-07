@@ -4,7 +4,7 @@ import React from "react";
 
 import {sidebarLinks} from "@/constants";
 
-import {LinkItem} from "@/app/(browse)/_components/sidebar/link-item";
+import {LinkItem, LinkItemSkeleton} from "@/app/(browse)/_components/sidebar/link-item";
 import {useCurrentUser} from "@/hooks/use-carrent-user";
 
 interface SidebarLink {
@@ -16,8 +16,6 @@ interface SidebarLink {
 export const Links = () => {
     const user = useCurrentUser()
 
-    console.log(user?.image)
-
     return (
         <div>
             <ul className="flex flex-col justify-between gap-x-3 h-[430px]">
@@ -28,8 +26,18 @@ export const Links = () => {
                         </li>
                     )
                 })}
-                <LinkItem image={user?.image || undefined} label="profile" route="/account"/>
+                <LinkItem image={user?.image || undefined} label="Profile" route="/account"/>
             </ul>
         </div>
     )
+}
+
+export const LinksSkeleton = () => {
+    return (
+        <ul className="px-2 rounded-xl bg-black">
+            {[...Array(8)].map((_, i) => (
+                <LinkItemSkeleton key={i} />
+            ))}
+        </ul>
+    );
 }
