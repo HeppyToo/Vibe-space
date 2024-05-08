@@ -7,7 +7,7 @@ const emailValidation = z.string()
 
 const passwordValidation = z.string()
     .min(6, { message: 'Password must be at least 6 characters long.' })
-    .max(50, { message: 'Password must be less than 50 characters long.' })
+    .max(20, { message: 'Password must be less than 20 characters long.' })
     .regex(/[a-zA-Z]/, { message: 'Password must contain letters.' })
     .regex(/[0-9]/, { message: 'Password must contain numbers.' })
     .regex(/[^a-zA-Z0-9]/, { message: 'Password must contain special characters.' });
@@ -54,4 +54,17 @@ export const RegisterSchema = z.object({
     email: emailValidation,
     password: passwordValidation,
     name: z.string().min(4, { message: 'Name must be at least 4 characters long.' }),
+});
+
+export const PostSchema = z.object({
+    caption: z
+        .string()
+        .min(5, { message: 'Minimum 5 characters.' })
+        .max(2200, { message: 'Maximum 2,200 caracters' }),
+    file: z.custom<File[]>(),
+    location: z
+        .string()
+        .min(1, { message: 'This field is required' })
+        .max(1000, { message: 'Maximum 1000 characters.' }),
+    tags: z.string(),
 });

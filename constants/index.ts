@@ -1,16 +1,14 @@
 import React from "react";
 
 import {IoMdHome} from "react-icons/io";
-import { CiDark } from "react-icons/ci";
 import {FaRegHeart} from "react-icons/fa";
 import { FiActivity } from "react-icons/fi";
 import {IoMdSearch} from "react-icons/io";
 import {FaRegCompass} from "react-icons/fa6";
 import { CiSaveDown2 } from "react-icons/ci";
-import { MdErrorOutline } from "react-icons/md";
 import { IoIosSettings } from "react-icons/io";
-import {FaClapperboard} from "react-icons/fa6";
-import {FaFacebookMessenger} from "react-icons/fa";
+import { LuClapperboard } from "react-icons/lu";
+import { RiMessengerLine } from "react-icons/ri";
 import {IoMdAddCircleOutline} from "react-icons/io";
 
 
@@ -37,12 +35,12 @@ export const sidebarLinks: SidebarLink[] = [
         label: "Explore",
     },
     {
-        Icon: FaClapperboard,
+        Icon: LuClapperboard,
         route: "/reels",
         label: "Reels",
     },
     {
-        Icon: FaFacebookMessenger,
+        Icon: RiMessengerLine,
         route: "/messages",
         label: "Messages",
     },

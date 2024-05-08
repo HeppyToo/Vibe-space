@@ -16,15 +16,20 @@ export const Toggle = () => {
     return (
         <>
             {collapsed && (
-                <div className="mt-5 hidden lg:flex items-center justify-center pt-4">
-                    <Hint label={label} side={'right'} asChild>
-                        <Button onClick={onExpand} className="h-auto p-2"
-                                variant="ghost"
-                        >
-                            <ArrowRightFromLine className="h-4 w-4"/>
-                        </Button>
-                    </Hint>
-                </div>
+                <>
+                    <div className="mt-5 hidden lg:flex items-center justify-center pt-4">
+                        <Hint label={label} side={'right'} asChild>
+                            <Button onClick={onExpand} className="h-auto p-2"
+                                    variant="ghost"
+                            >
+                                <ArrowRightFromLine className="h-4 w-4"/>
+                            </Button>
+                        </Hint>
+                    </div>
+                    <div className="flex items-center justify-center pt-4 pl-3 lg:hidden">
+                        <Logo />
+                    </div>
+                </>
             )}
             {!collapsed && (
                 <div className="mt-4 p-3 pl-4 mb-2 flex items-center w-full">
@@ -49,8 +54,8 @@ export const Toggle = () => {
 export const ToggleSkeleton = () => {
     return (
         <div className="mt-3 pl-6 mb-2 hidden lg:flex items-center justify-between w-full bg-black h-20 rounded-xl">
-            <Skeleton className="w-[150px] h-[50px] bg-[#1f1f1f]" />
-            <Skeleton className="h-6 w-6 bg-[#1f1f1f] mr-5" />
+            <Skeleton className="w-[150px] h-[50px] bg-[#1f1f1f]"/>
+            <Skeleton className="h-6 w-6 bg-[#1f1f1f] mr-5"/>
         </div>
     );
 };
