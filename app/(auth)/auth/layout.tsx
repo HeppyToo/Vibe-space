@@ -1,5 +1,5 @@
-import Image from 'next/image';
-import auth_logo from '../../../public/anime-characters.png';
+import Image from "next/image";
+import auth_logo from "../../../public/anime-characters.png";
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (

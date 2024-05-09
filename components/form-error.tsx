@@ -1,16 +1,16 @@
 import { FiAlertTriangle } from "react-icons/fi";
 
 interface FormErrorProps {
-    massage?: string;
+  massage?: string;
 }
 
-export const FormError: React.FC<FormErrorProps> = ({massage}) => {
-    if(!massage) return null;
+export const FormError: React.FC<FormErrorProps> = ({ massage }) => {
+  if (!massage) return null;
 
-    return (
-        <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive">
-            <FiAlertTriangle className="w-5 h-5"/>
-            <p>{massage}</p>
-        </div>
-    )
-}
+  return (
+    <div className="bg-destructive/15 p-3 rounded-md flex items-center gap-x-2 text-sm text-destructive">
+      <FiAlertTriangle className="w-5 h-5" />
+      <p>{massage}</p>
+    </div>
+  );
+};
