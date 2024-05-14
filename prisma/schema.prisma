@@ -25,6 +25,7 @@ model User {
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation twoFactorConfirmation?
+  Posts                 Posts[]
 }
 
 model Account {
@@ -81,4 +82,17 @@ model twoFactorConfirmation {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId])
+}
+
+model Posts {
+  id        String   @id @default(cuid())
+  content   String
+  location  String
+  tags      String[]
+  imageUrl  String   @db.Text
+  published Boolean  @default(false)
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

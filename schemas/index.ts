@@ -65,11 +65,11 @@ export const RegisterSchema = z.object({
 });
 
 export const PostSchema = z.object({
-  caption: z
+  content: z
     .string()
     .min(5, { message: "Minimum 5 characters." })
     .max(2200, { message: "Maximum 2,200 caracters" }),
-  file: z.custom<File[]>(),
+  imageUrl: z.string(),
   location: z
     .string()
     .min(1, { message: "This field is required" })
