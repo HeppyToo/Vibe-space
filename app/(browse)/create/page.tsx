@@ -1,20 +1,16 @@
 import { MdOutlineAddPhotoAlternate } from "react-icons/md";
 import { PostForm } from "@/components/browse/post-form";
+import {useIsClient} from "usehooks-ts";
+import {PostCreationHeader} from "@/app/(browse)/create/_componetn/post-creation-header";
+import {Wrapper} from "@/app/(browse)/create/_componetn/wrapper";
 
 const CreatePost = () => {
   return (
-    <div className="text-white min-h-screen flex flex-1">
-      <div className="flex flex-col flex-1 gap-10 py-10 px-5 md:px-8 lg:p-14">
-        <div className="flex items-center gap-3 justify-start lg:justify-center">
-          <MdOutlineAddPhotoAlternate className="w-6 h-6" />
-          <h2 className="text-[24px] font-bold leading-[140%] tracking-tighter">
-            Create Post
-          </h2>
-        </div>
+    <Wrapper>
+        <PostCreationHeader />
 
         <PostForm action="Create" />
-      </div>
-    </div>
+    </Wrapper>
   );
 };
 

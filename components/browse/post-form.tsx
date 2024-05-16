@@ -21,6 +21,7 @@ import { createPost } from "@/action/post";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
 import { useCurrentUser } from "@/hooks/use-carrent-user";
+import { CiHashtag, CiLocationOn } from "react-icons/ci";
 
 interface PostFormProps {
   action: string;
@@ -79,9 +80,9 @@ export const PostForm = ({ action }: PostFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-9 w-full max-w-5xl"
+        className="flex flex-col gap-9 w-full"
       >
-        <div className="flex justify-between space-x-4 w-full">
+        <div className="flex justify-between flex-col md:flex-row space-x-0 md:space-x-4 w-full">
           <FormField
             control={form.control}
             name="imageUrl"
@@ -106,17 +107,20 @@ export const PostForm = ({ action }: PostFormProps) => {
               <FormItem className="w-full">
                 <FormLabel className="text-white text-md">Caption</FormLabel>
                 <FormControl>
-                  <Textarea
-                    className="h-72 bg-[#1f1f1f] rounded-xl border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3"
-                    {...field}
-                  />
+                  <div className="relative flex items-center justify-center">
+                    <Textarea
+                      className="h-72 bg-[#1f1f1f] pl-4 pt-2 border-none focus:ring-1 focus:ring-offset-1 ring-offset-light-3"
+                      placeholder={`What's on your mind, ${user?.name}?`}
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
             )}
           />
         </div>
-        <div className="flex justify-between space-x-4 w-full">
+        <div className="flex justify-between flex-col md:flex-row space-x-0 md:space-x-4 w-full">
           <FormField
             control={form.control}
             name="location"
@@ -124,7 +128,15 @@ export const PostForm = ({ action }: PostFormProps) => {
               <FormItem className="w-full">
                 <FormLabel className="text-white">Location</FormLabel>
                 <FormControl>
-                  <Input type="text" className="" {...field} />
+                  <div className="relative flex items-center justify-center w-full ">
+                    <CiLocationOn className="absolute left-2 w-6 h-6" />
+                    <Input
+                      type="text"
+                      placeholder="Berlin"
+                      className="pl-9"
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
@@ -139,12 +151,15 @@ export const PostForm = ({ action }: PostFormProps) => {
                   Add Tags (separated by comma " , ")
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder="Art, Expression, Learn"
-                    type="text"
-                    className=""
-                    {...field}
-                  />
+                  <div className="relative flex items-center justify-center w-full ">
+                    <CiHashtag className="absolute left-2 w-6 h-6" />
+                    <Input
+                      placeholder="Art, Expression, Learn"
+                      type="text"
+                      className="pl-9"
+                      {...field}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage className="text-red-500" />
               </FormItem>
