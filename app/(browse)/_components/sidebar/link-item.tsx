@@ -38,14 +38,6 @@ export const LinkItem = ({ Icon, image, label, route }: SidebarLink) => {
       <Link href={route}>
         <div className="w-full p-0 flex justify-start gap-x-2 items-center">
           {Icon ? <Icon className="w-6 h-6" /> : null}
-          {image ? (
-            <Avatar className="w-6 h-6">
-              <AvatarImage src={image} alt="User" className="outline-0" />
-              <AvatarFallback className="bg-black outline-0">
-                <FaUser className="text-white" />
-              </AvatarFallback>
-            </Avatar>
-          ) : null}
           {!collapsed && <p className="pl-3 text-md">{label}</p>}
         </div>
       </Link>

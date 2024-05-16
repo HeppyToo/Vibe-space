@@ -10,6 +10,7 @@ import {
 } from "@/app/(browse)/_components/sidebar/link-item";
 import { useCurrentUser } from "@/hooks/use-carrent-user";
 import { ReportProblem } from "@/app/(browse)/_components/sidebar/report-problem";
+import {ProfileLink} from "@/app/(browse)/_components/sidebar/profile-link";
 
 interface SidebarLink {
   Icon: React.ElementType;
@@ -35,11 +36,7 @@ export const Links = () => {
           );
         })}
         <ReportProblem />
-        <LinkItem
-          image={user?.image || undefined}
-          label="Profile"
-          route="/account"
-        />
+        <ProfileLink route="/acount" label="Profile" image={user?.image ?? undefined}/>
       </ul>
     </div>
   );
