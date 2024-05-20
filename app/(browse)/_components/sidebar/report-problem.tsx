@@ -46,7 +46,7 @@ export function ReportProblem() {
             placeholder="Type your message here."
             value={message}
             onChange={(e) => setMessage(e.target.value)}
-            className="w-full bg-[#1f1f1f] border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3"
+            className="w-full pl-2 pt-1 bg-[#1f1f1f] border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3"
           />
           <p className="pt-4 text-sm text-muted-foreground">
             Your Instagram username and browser information will be

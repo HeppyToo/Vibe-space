@@ -2,6 +2,8 @@ import { Poppins } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { currentUser } from "@/lib/auth";
+import {getPosts} from "@/data/post";
+import PostCard from "@/components/browse/post-card";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -9,6 +11,8 @@ const font = Poppins({
 });
 const Home = async () => {
   const user = await currentUser();
+
+  let posts = await getPosts();
 
   return (
     <main className="flex h-screen flex-col items-center justify-center">
@@ -20,7 +24,7 @@ const Home = async () => {
           )}
         ></h1>
         <p className="text-white text-lg">
-          sdvgfvdfzlsdvgfvdfzlsdvgfvdfzlsdvgfvdfzlsdvgfvdfzlsdvgfvdfzlsdvgfvdfzlsdvgfvdfzl,
+          <PostCard post={posts} />
         </p>
       </div>
     </main>
