@@ -8,6 +8,7 @@ import { getUserByEmail } from "@/data/user";
 export const createPost = async (
     values: z.infer<typeof PostSchema>,
     email: string,
+    imageUrl: string
 ) => {
   // Validate the input values against the Post schema
   const validateFields = PostSchema.safeParse(values);
@@ -15,7 +16,7 @@ export const createPost = async (
     return { error: "Invalid fields provided! Please check the data format." };
   }
 
-  const { content, tags, location, imageUrl } = validateFields.data;
+  const { content, tags, location} = validateFields.data;
 
   // Process tags, ensuring no spaces and splitting by commas
   const tagsArr = tags?.replace(/ /g, "").split(",") || [];

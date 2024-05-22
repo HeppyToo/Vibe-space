@@ -1,93 +1,81 @@
-import { multiFormatDateString } from '@/lib/utils';
+"use client";
 
-import { currentUser } from "@/lib/auth";
-import { Link } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+import {FaUser} from "react-icons/fa";
+import {multiFormatDateString} from "@/lib/utils";
+import {Avatar, AvatarFallback, AvatarImage} from "@/components/ui/avatar";
 
-type PostCardProps = {
-    post: {
-        $id: string;
-        $createdAt: string;
-        location: string;
-        caption: string;
-        tags: string[];
-        imageUrl: string;
-        creator: {
-            $id: string;
-            name: string;
-            imageUrl: string;
-        };
+interface Post {
+    id: string;
+    content: string;
+    location: string;
+    tags: string[];
+    imageUrl: string;
+    published: boolean;
+    authorId: string;
+    createdAt: string;
+    updatedAt: string;
+    author: {
+        image: string;
+        name: string;
     };
-};
+}
 
-const PostCard = async ({ post }: PostCardProps) => {
-    const user = await currentUser()
+interface PostCardProps {
+  post: Post;
+}
 
-    if (!post.creator) return;
+export const PostCard = ({ post }: PostCardProps) => {
+  return (
+    <div className="bg-[#1f1f1f] rounded-3xl border text-white border-slate-800/40 p-5 lg:p-7 w-full max-w-screen-sm w-f">
+     <div className="flex justify-between items-center">
+         <div className="flex items-center gap-3">
+             <Link href={`/profile/${post.authorId}`}>
+                 <Avatar className="w-9 h-9">
+                     <AvatarImage src={post.author.image || ""} alt="User" className="outline-0" />
+                     <AvatarFallback className="bg-black outline-0">
+                         <FaUser className="text-white" />
+                     </AvatarFallback>
+                 </Avatar>
+             </Link>
 
-    return (
-        <div className="bg-dark-2 rounded-3xl border border-dark-4 p-5 lg:p-7 w-full max-w-screen-sm">
-            <div className="flex-between">
-                <div className="flex items-center gap-3">
-                    <Link to={`/profile/${post.creator.$id}`}>
-                        <img
-                            src={
-                                post.creator?.imageUrl ||
-                                '/assets/icons/profile-placeholder.svg'
-                            }
-                            alt="creator"
-                            className="w-12 lg:h-12 rounded-full"
-                        />
-                    </Link>
-
-                    <div className="flex flex-col">
-                        <p className="base-medium lg:body-bold text-light-1">
-                            {post.creator.name}
-                        </p>
-                        <div className="flex-center gap-2 text-light-3">
-                            <p className="subtle-semibold lg:small-regular">
-                                {multiFormatDateString(post.$createdAt)}
-                            </p>
-                            -
-                            <p className="subtle-semibold lg:small-regular">
-                                {post.location}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <Link
-                    to={`/update-post/${post.$id}`}
-                    className={`${user?.id !== post.creator.$id && 'hidden'}`}
-                >
-                    <img
-                        src={'/assets/icons/edit.svg'}
-                        alt="edit"
-                        width={20}
-                        height={20}
-                    />
-                </Link>
+             <div className="flex flex-col">
+                 <p className="flex justify-start text-[16px] font-medium leading-[140%] lg:text-[18px]">
+                     {post.author.name}
+                 </p>
+                 <div className="flex justify-center items-center gap-2">
+                     <p className="text-[12px] font-semibold leading-[140%] lg:text-[14px] lg:font-normal">
+                         {multiFormatDateString(post.createdAt)}.
+                     </p>
+                     <p className="text-[12px] font-semibold leading-[140%] lg:text-[14px]">
+                         {post.location}
+                     </p>
+                 </div>
+             </div>
+         </div>
+     </div>
+        <Link href={`/post/${post.id}`}>
+            <div className="flex justify-start text-[14px] font-medium leading-[140%] lg:text-[16px] py-5">
+                <p>{post.content}</p>
             </div>
 
-            <Link to={`/posts/${post.$id}`}>
-                <div className="small-medium lg:base-medium py-5">
-                    <p>{post.caption}</p>
-                    <ul className="flex gap-1 mt-2">
-                        {post.tags.map((tag: string, index: number) => (
-                            <li key={`${tag}${index}`} className="text-light-3 small-regular">
-                                #{tag}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+            <Image
+                src={post.imageUrl}
+                alt="post_image"
+                className="h-64 xs:h-[400px] lg:h-[450px] w-full rounded-[24px] object-cover mb-5"
+                height={450}
+                width={450}
+            />
 
-                <img
-                    src={post.imageUrl || '/assets/icons/profile-placeholder.svg'}
-                    alt="post image"
-                    className="post-card_img"
-                />
-            </Link>
-        </div>
-    );
+            <ul className="flex gap-1 mt-2">
+                {post.tags.map((tag: string, index: number) => (
+                    <li key={`${tag}${index}`} className="text-[14px] font-normal leading-[140%]">
+                        #{tag}
+                    </li>
+                ))}
+            </ul>
+        </Link>
+    </div>
+  );
 };
-
-export default PostCard;

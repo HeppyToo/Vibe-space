@@ -25,7 +25,7 @@ export const Wrapper = ({ children }: WrapperProps) => {
     }
 
     return (
-      <div className="text-white min-h-screen w-full flex flex-1 flex-col gap-10 py-10 px-5 md:px-8 lg:p-14">
+      <div className="text-white min-h-screen w-full flex flex-1 flex-col gap-10 pt-10 px-5 md:px-8 lg:p-9">
         {children}
       </div>
     );
