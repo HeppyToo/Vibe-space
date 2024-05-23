@@ -1,9 +1,8 @@
 import { Poppins } from "next/font/google";
 
 import { cn } from "@/lib/utils";
-import { currentUser } from "@/lib/auth";
 import { PostCard } from "@/components/browse/post-card";
-import {getPostsAndAuthor} from "@/data/post";
+import { getPostsAndAuthor } from "@/data/post";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -13,28 +12,31 @@ const font = Poppins({
 const Home = async () => {
   const posts = await getPostsAndAuthor();
 
-  if(!posts) {
-      return
+  if (!posts) {
+    return;
   }
 
   return (
-    <main className="flex h-full flex-col items-center justify-center">
-      <div className="space-y-6 text-center">
-        <h1
+      <main className="flex h-full text-white">
+        <div className="flex flex-col space-y-6 text-center flex-grow">
+          <ul
             className={cn(
-                "text-6xl font-semibold text-white drop-shadow-md",
-                font.className,
+              "text-xl font-semibold text-white drop-shadow-md mt-3",
+              font.className,
             )}
-        ></h1>
-        <ul className="flex flex-col flex-1 gap-9 w-full ">
-          {posts.map((post: any) => (
+          >
+            Тут будуть сторіси
+          </ul>
+          <ul className="flex flex-col flex-1 gap-9 w-full pb-5">
+            {posts.map((post: any) => (
               <li key={post.id} className="flex justify-center w-full">
-                <PostCard post={post}/>
+                <PostCard post={post} />
               </li>
-          ))}
-        </ul>
-      </div>
-    </main>
+            ))}
+          </ul>
+        </div>
+        <div className="w-1/4 mt-3">Юзери</div>
+      </main>
   );
 };
 

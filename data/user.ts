@@ -19,3 +19,13 @@ export const getUserById = async (id: string) => {
     return null;
   }
 };
+
+export const getUserByUsername = async (name: string) => {
+  try {
+    const user = await db.user.findFirst({ where: { name } });
+
+    return user;
+  } catch {
+    return null;
+  }
+}

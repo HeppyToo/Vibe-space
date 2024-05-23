@@ -97,10 +97,10 @@ export const PostForm = ({ action }: PostFormProps) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col gap-9 w-full"
+        className="flex flex-col gap-9 w-full pb-5 lg:pb-0"
       >
-        <div className="flex flex-row gap-4">
-          <div className="flex flex-col w-1/2 h-full">
+        <div className="flex flex-col justify-center items-center md:flex-row gap-4">
+          <div className="flex flex-col w-full md:w-1/2 h-full">
             <FormField
               control={form.control}
               name="imageUrl"
@@ -120,7 +120,7 @@ export const PostForm = ({ action }: PostFormProps) => {
             />
           </div>
 
-          <div className="flex flex-col w-1/2">
+          <div className="flex flex-col w-full md:w-1/2">
             <FormField
               control={form.control}
               name="content"
@@ -189,12 +189,12 @@ export const PostForm = ({ action }: PostFormProps) => {
             <div className="flex flex-col pt-4 gap-4 items-center justify-end">
               <Button
                 type="submit"
-                className="lg:w-full whitespace-nowrap"
+                className="w-full whitespace-nowrap"
                 disabled={isPending}
               >
                 {!isPending ? "Post" : "Posting..."}
               </Button>
-                <Button type="button" className="lg:w-full whitespace-nowrap" disabled={isPending}>
+                <Button type="button" className="w-full whitespace-nowrap" disabled={isPending}>
                     Cancel
                 </Button>
             </div>

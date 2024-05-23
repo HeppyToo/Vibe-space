@@ -31,7 +31,7 @@ export const PostCard = ({ post }: PostCardProps) => {
     <div className="bg-[#1f1f1f] rounded-3xl border text-white border-slate-800/40 p-5 lg:p-7 w-full max-w-screen-sm w-f">
      <div className="flex justify-between items-center">
          <div className="flex items-center gap-3">
-             <Link href={`/profile/${post.authorId}`}>
+             <Link href={`/profile/${post.author.name}`}>
                  <Avatar className="w-9 h-9">
                      <AvatarImage src={post.author.image || ""} alt="User" className="outline-0" />
                      <AvatarFallback className="bg-black outline-0">

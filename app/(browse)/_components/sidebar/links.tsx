@@ -36,7 +36,11 @@ export const Links = () => {
           );
         })}
         <ReportProblem />
-        <ProfileLink route="/acount" label="Profile" image={user?.image ?? undefined}/>
+        <ProfileLink
+          route={`/profile/${user?.name}`}
+          label="Profile"
+          image={user?.image ?? undefined}
+        />
       </ul>
     </div>
   );
