@@ -2,7 +2,7 @@ import { Poppins } from "next/font/google";
 
 import { cn } from "@/lib/utils";
 import { PostCard } from "@/components/browse/post-card";
-import { getPostsAndAuthor } from "@/data/post";
+import { getPosts } from "@/data/post";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -10,7 +10,7 @@ const font = Poppins({
 });
 
 const Home = async () => {
-  const posts = await getPostsAndAuthor();
+  const posts = await getPosts();
 
   if (!posts) {
     return;

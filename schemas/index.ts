@@ -68,7 +68,7 @@ export const PostSchema = z.object({
   content: z
     .string()
     .min(5, { message: "Minimum 5 characters." })
-    .max(2200, { message: "Maximum 2,200 caracters" }),
+    .max(2200, { message: "Maximum 2,200 characters" }),
   imageUrl: z.string(),
   location: z
     .string()

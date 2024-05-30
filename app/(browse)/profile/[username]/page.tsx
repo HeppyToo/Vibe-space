@@ -6,6 +6,8 @@ import { FaRegEdit } from "react-icons/fa";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { BsPostcardHeart } from "react-icons/bs";
+import { GridPostList } from "@/components/browse/grid-post-list";
+import {getPosts, getPostsByUserId} from "@/data/post";
 
 interface UserPageProps {
   params: {
@@ -31,21 +33,24 @@ const StatBlock = ({ value, label }: StabBlockProps) => (
 
 const UserPage = async ({ params }: UserPageProps) => {
   const user = await getUserByUsername(params.username);
+  const posts = await getPosts();
   const loggedInUser = await currentUser();
+
+  console.log(posts)
 
   return (
     <div className="flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar text-white">
-      <div className="flex items-center md:mb-8 xl:items-start gap-8 flex-col xl:flex-row relative max-w-5xl w-full">
+      <div className="flex items-center xl:items-start gap-8 flex-col xl:flex-row relative max-w-5xl w-full">
         <div className="flex xl:flex-row flex-col max-xl:items-center flex-1 gap-7">
           <div className="flex justify-center items-center">
-            <Avatar className="w-9 h-9">
+            <Avatar className="w-36 h-36">
               <AvatarImage
                 src={user?.image || ""}
                 alt="User"
                 className="outline-0"
               />
               <AvatarFallback className="bg-black outline-0 flex justify-center items-center">
-                <FaUser className="text-white" />
+                <FaUser className="text-white w-32 h-32" />
               </AvatarFallback>
             </Avatar>
           </div>
@@ -55,19 +60,15 @@ const UserPage = async ({ params }: UserPageProps) => {
                 {user?.name}
               </h1>
               <p className=" text-[14px] font-normal leading-[140%] md:text-[18px] md:font-medium text-light-3 text-center xl:text-left">
-                {user?.name}
+                {user?.username}
               </p>
             </div>
 
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
-              {/*<StatBlock value={currentUser.posts.length} label="Posts" />*/}
+              <StatBlock value={20} label="Posts" />
               <StatBlock value={20} label="Followers" />
               <StatBlock value={20} label="Following" />
             </div>
-
-            <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-center xl:text-left mt-7 max-w-screen-sm">
-              {user?.id}
-            </p>
           </div>
 
           <div className="flex justify-center gap-4">
@@ -85,7 +86,11 @@ const UserPage = async ({ params }: UserPageProps) => {
               </Link>
             </div>
 
-            <div className={`${user?.id === loggedInUser?.id && "hidden"}`}>
+            <div
+              className={`${
+                user?.id === loggedInUser?.id && "hidden"
+              } flex flex-col gap-2 pt-1`}
+            >
               <Button type="button" className="px-8">
                 Follow
               </Button>
@@ -93,28 +98,13 @@ const UserPage = async ({ params }: UserPageProps) => {
           </div>
         </div>
       </div>
+      <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-center xl:text-left mt-0 max-w-5xl">
+        {user?.bio}
+      </p>
 
       {loggedInUser?.id === user?.id && (
         <div className="flex max-w-5xl w-full">
-          <Link
-            href={`/profile/${params.username}`}
-            className={`flex justify-center items-center gap-3 py-4 w-full bg-[#1f1f1f] transition flex-1 xl:flex-initial rounded-l-lg ${
-              params.username === `/profile/${params.username}` && "bg-red-700"
-            }`}
-          >
-            <BsPostcardHeart className="w-6 h-6" />
-            Posts
-          </Link>
-          <Link
-            href={`/profile/${params.username}/liked-posts`}
-            className={`flex justify-center items-center gap-3 py-4 w-full bg-[#1f1f1f] transition flex-1 xl:flex-initial rounded-l-lg rounded-r-lg ${
-              params.username === `/profile/${params.username}/liked-posts` &&
-              "bg-red-700"
-            }`}
-          >
-            <FaRegHeart className="w-6 h-6" />
-            Liked Posts
-          </Link>
+          <GridPostList posts={posts} />
         </div>
       )}
     </div>

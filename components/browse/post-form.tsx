@@ -49,6 +49,7 @@ export const PostForm = ({ action }: PostFormProps) => {
   const form = useForm<z.infer<typeof PostSchema>>({
     resolver: zodResolver(PostSchema),
     defaultValues: initialValues,
+
   });
 
   const onSubmit = async (value: z.infer<typeof PostSchema>) => {

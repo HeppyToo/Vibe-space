@@ -15,10 +15,10 @@ export const UserInfo = ({ user, label }: UserInfoProps) => {
         <p className="text-2xl font-semibold text-center">{label}</p>
       </CardHeader>
       <CardContent className="space-y-4">
-        <UserInfoSection name="Id" value={user?.id || "N/A"} />
-        <UserInfoSection name="Name" value={user?.name || "N/A"} />
-        <UserInfoSection name="Email" value={user?.email || "N/A"} />
-        <UserInfoSection name="Role" value={user?.role || "N/A"} />
+        <UserInfoSection name="Id" value={user?.id} />
+        <UserInfoSection name="Name" value={user?.name} />
+        <UserInfoSection name="Email" value={user?.email} />
+        <UserInfoSection name="Role" value={user?.role} />
 
         <div className="flex flex-row items-center justify-between rounded-lg border p-3 shadow-sm border-slate-600">
           <p className="text-sm font-medium">Two Factor Authentication</p>
