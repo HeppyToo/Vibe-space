@@ -1,7 +1,7 @@
 
 export const getPosts = async () => {
   try {
-    const posts = await db.posts.findMany({
+    const posts = await db.post.findMany({
       include: {
         author: true, // Include author data
       },
@@ -20,22 +20,22 @@ export const getPosts = async () => {
 
 import { db } from "@/lib/db";
 
-export const getPostsByUserId = async (id: string | undefined) => {
+export const getPostsByUserId = async (userId: string) => {
   try {
-    const post = await db.posts.findUnique({
+    const posts = await db.post.findMany({
       where: {
-        id: id,
+        authorId: userId,
       },
       include: {
         author: true, // Include author data
       },
     });
 
-    if (!post) {
+    if (!posts) {
       return null;
     }
 
-    return post;
+    return posts;
   } catch (error) {
     console.error(error);
     return null;

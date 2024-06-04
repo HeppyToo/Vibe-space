@@ -185,15 +185,15 @@ export const PostForm = ({ action }: PostFormProps) => {
                 </FormItem>
               )}
             />
-            <FormError massage={error} />
-            <FormSuccess massage={success} />
+            <FormError massage={error}/>
+            <FormSuccess massage={success}/>
             <div className="flex flex-col pt-4 gap-4 items-center justify-end">
               <Button
                 type="submit"
                 className="w-full whitespace-nowrap"
                 disabled={isPending}
               >
-                {!isPending ? "Post" : "Posting..."}
+                {isPending ? "Loading..." : "Post"}
               </Button>
                 <Button type="button" className="w-full whitespace-nowrap" disabled={isPending}>
                     Cancel

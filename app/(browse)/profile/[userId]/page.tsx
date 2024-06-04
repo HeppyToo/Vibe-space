@@ -1,22 +1,29 @@
-import { getUserByUsername } from "@/data/user";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { FaRegHeart, FaUser } from "react-icons/fa";
+import { FaUser } from "react-icons/fa";
 import { currentUser } from "@/lib/auth";
 import { FaRegEdit } from "react-icons/fa";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { BsPostcardHeart } from "react-icons/bs";
 import { GridPostList } from "@/components/browse/grid-post-list";
-import {getPosts, getPostsByUserId} from "@/data/post";
+import { getPostsByUserId } from "@/data/post";
+import { getUserByUserId } from "@/data/user";
+import {
+  getFollowersCount,
+  getFollowingCount,
+  isFollowingUser,
+} from "@/action/follow";
+import FollowButton from "@/app/(browse)/profile/_component/follow-button";
+import BlockButton from "@/app/(browse)/profile/_component/block-button";
+import {isBlockedByUser} from "@/action/block";
+import {notFound} from "next/navigation";
 
 interface UserPageProps {
   params: {
-    username: string;
+    userId: string;
   };
 }
 
 interface StabBlockProps {
-  value: string | number;
+  value: string | number | undefined;
   label: string;
 }
 
@@ -32,11 +39,26 @@ const StatBlock = ({ value, label }: StabBlockProps) => (
 );
 
 const UserPage = async ({ params }: UserPageProps) => {
-  const user = await getUserByUsername(params.username);
-  const posts = await getPosts();
+  const user = await getUserByUserId(params.userId);
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  const posts = await getPostsByUserId(user.id);
   const loggedInUser = await currentUser();
 
-  console.log(posts)
+  const followStatus = await isFollowingUser(user.id);
+  const isFollowing = typeof followStatus === "boolean" ? followStatus : false;
+
+  const followersCount = await getFollowersCount(user.id);
+  const followingCount = await getFollowingCount(user.id);
+
+  const isBlocked = await isBlockedByUser(user.id);
+
+  if (isBlocked) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar text-white">
@@ -65,9 +87,9 @@ const UserPage = async ({ params }: UserPageProps) => {
             </div>
 
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
-              <StatBlock value={20} label="Posts" />
-              <StatBlock value={20} label="Followers" />
-              <StatBlock value={20} label="Following" />
+              <StatBlock value={posts?.length} label="Posts" />
+              <StatBlock value={followersCount} label="Followers" />
+              <StatBlock value={followingCount} label="Following" />
             </div>
           </div>
 
@@ -91,9 +113,8 @@ const UserPage = async ({ params }: UserPageProps) => {
                 user?.id === loggedInUser?.id && "hidden"
               } flex flex-col gap-2 pt-1`}
             >
-              <Button type="button" className="px-8">
-                Follow
-              </Button>
+              <FollowButton userId={user.id} isFollowing={isFollowing} />
+              <BlockButton userId={user.id} />
             </div>
           </div>
         </div>
@@ -102,11 +123,9 @@ const UserPage = async ({ params }: UserPageProps) => {
         {user?.bio}
       </p>
 
-      {loggedInUser?.id === user?.id && (
-        <div className="flex max-w-5xl w-full">
-          <GridPostList posts={posts} />
-        </div>
-      )}
+      <div className="flex max-w-5xl w-full">
+        <GridPostList posts={posts} showUser={false} />
+      </div>
     </div>
   );
 };
