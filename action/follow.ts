@@ -152,10 +152,10 @@ export const getFollowersCount = async (userId: string) => {
       },
     });
 
-    return followers.length;
+    return followers;
   } catch (error) {
     console.error(error);
-    return 0;
+    return [];
   }
 };
 
@@ -167,9 +167,9 @@ export const getFollowingCount = async (userId: string) => {
       },
     });
 
-    return following.length;
+    return following;
   } catch (error) {
     console.error(error);
-    return 0;
+    return [];
   }
 };

@@ -24,6 +24,9 @@ export default async function RootLayout({
   return (
     <SessionProvider session={session}>
       <html lang="en" suppressHydrationWarning={true}>
+      <head>
+        <link rel="icon" href="/spooky.svg"/>
+      </head>
         <body className={inter.className} suppressHydrationWarning={true}>
           <ThemeProvider
             attribute="class"

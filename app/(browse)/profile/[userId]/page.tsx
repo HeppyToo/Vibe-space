@@ -13,8 +13,9 @@ import {
 } from "@/action/follow";
 import FollowButton from "@/app/(browse)/profile/_component/follow-button";
 import BlockButton from "@/app/(browse)/profile/_component/block-button";
-import {isBlockedByUser} from "@/action/block";
-import {notFound} from "next/navigation";
+import { isBlockedByUser } from "@/action/block";
+import { notFound } from "next/navigation";
+import {ModalFollowers} from "@/app/(browse)/profile/_component/modal-followers";
 
 interface UserPageProps {
   params: {
@@ -56,6 +57,8 @@ const UserPage = async ({ params }: UserPageProps) => {
 
   const isBlocked = await isBlockedByUser(user.id);
 
+  console.log(followingCount, followersCount)
+
   if (isBlocked) {
     notFound();
   }
@@ -88,8 +91,10 @@ const UserPage = async ({ params }: UserPageProps) => {
 
             <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={posts?.length} label="Posts" />
-              <StatBlock value={followersCount} label="Followers" />
-              <StatBlock value={followingCount} label="Following" />
+              <ModalFollowers name={user.name}>
+                <StatBlock value={followersCount.length} label="Followers" />
+              </ModalFollowers>
+              <StatBlock value={followingCount.length} label="Following" />
             </div>
           </div>
 
