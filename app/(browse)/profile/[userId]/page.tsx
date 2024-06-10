@@ -1,3 +1,5 @@
+"use server"
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import { currentUser } from "@/lib/auth";
@@ -6,16 +8,12 @@ import Link from "next/link";
 import { GridPostList } from "@/components/browse/grid-post-list";
 import { getPostsByUserId } from "@/data/post";
 import { getUserByUserId } from "@/data/user";
-import {
-  getFollowersCount,
-  getFollowingCount,
-  isFollowingUser,
-} from "@/action/follow";
+import { getFollowers, getFollowing, isFollowingUser } from "@/action/follow";
 import FollowButton from "@/app/(browse)/profile/_component/follow-button";
 import BlockButton from "@/app/(browse)/profile/_component/block-button";
 import { isBlockedByUser } from "@/action/block";
 import { notFound } from "next/navigation";
-import {ModalFollowers} from "@/app/(browse)/profile/_component/modal-followers";
+import { ModalFollowers } from "@/app/(browse)/profile/_component/modal-followers";
 
 interface UserPageProps {
   params: {
@@ -29,7 +27,7 @@ interface StabBlockProps {
 }
 
 const StatBlock = ({ value, label }: StabBlockProps) => (
-  <div className="flex-center gap-2">
+  <div className="flex justify-center items-center gap-2 flex-row">
     <p className="text-[14px] font-semibold leading-[140%] tracking-tighter lg:text-[18px] lg:font-bold text-primary-500">
       {value}
     </p>
@@ -43,25 +41,18 @@ const UserPage = async ({ params }: UserPageProps) => {
   const user = await getUserByUserId(params.userId);
 
   if (!user) {
-    throw new Error("User not found");
+    notFound()
   }
 
   const posts = await getPostsByUserId(user.id);
   const loggedInUser = await currentUser();
 
   const followStatus = await isFollowingUser(user.id);
-  const isFollowing = typeof followStatus === "boolean" ? followStatus : false;
 
-  const followersCount = await getFollowersCount(user.id);
-  const followingCount = await getFollowingCount(user.id);
+  const followers = await getFollowers(user.id);
+  const following = await getFollowing(user.id);
 
   const isBlocked = await isBlockedByUser(user.id);
-
-  console.log(followingCount, followersCount)
-
-  if (isBlocked) {
-    notFound();
-  }
 
   return (
     <div className="flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar text-white">
@@ -89,15 +80,16 @@ const UserPage = async ({ params }: UserPageProps) => {
               </p>
             </div>
 
-            <div className="flex gap-8 mt-10 items-center justify-center xl:justify-start flex-wrap z-20">
+            <div className="flex gap-8 mt-1 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={posts?.length} label="Posts" />
-              <ModalFollowers name={user.name}>
-                <StatBlock value={followersCount.length} label="Followers" />
+              <ModalFollowers authors={followers} label="Followers">
+                <StatBlock value={followers.length} label="Followers" />
               </ModalFollowers>
-              <StatBlock value={followingCount.length} label="Following" />
+              <ModalFollowers authors={following} label="Following">
+                <StatBlock value={following.length} label="Following" />
+              </ModalFollowers>
             </div>
           </div>
-
           <div className="flex justify-center gap-4">
             <div className={`${user?.id !== loggedInUser?.id && "hidden"}`}>
               <Link
@@ -118,16 +110,17 @@ const UserPage = async ({ params }: UserPageProps) => {
                 user?.id === loggedInUser?.id && "hidden"
               } flex flex-col gap-2 pt-1`}
             >
-              <FollowButton userId={user.id} isFollowing={isFollowing} />
+              <FollowButton userId={user.id} isFollowing={followStatus} />
               <BlockButton userId={user.id} />
             </div>
           </div>
         </div>
       </div>
-      <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-center xl:text-left mt-0 max-w-5xl">
-        {user?.bio}
-      </p>
-
+      <div className="w-full max-w-5xl flex justify-start">
+        <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-center xl:text-left mt-0">
+          {user?.bio}
+        </p>
+      </div>
       <div className="flex max-w-5xl w-full">
         <GridPostList posts={posts} showUser={false} />
       </div>

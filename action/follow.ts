@@ -1,4 +1,4 @@
-import {db} from "@/lib/db";
+import { db } from "@/lib/db";
 
 import { currentUser } from "@/lib/auth";
 
@@ -40,7 +40,6 @@ export const isFollowingUser = async (id: string) => {
       },
     });
 
-
     if (!otherUser) {
       return { error: "User not found" };
     }
@@ -62,7 +61,7 @@ export const isFollowingUser = async (id: string) => {
       console.error(error);
       return { error: error.message };
     }
-    return { error: 'An unknown error occurred' };
+    return { error: "An unknown error occurred" };
   }
 };
 
@@ -144,30 +143,43 @@ export const unfollowUser = async (id: string) => {
   });
 };
 
-export const getFollowersCount = async (userId: string) => {
+export const getFollowers = async (userId: string) => {
   try {
     const followers = await db.follow.findMany({
       where: {
         followingId: userId,
       },
+      include: {
+        follower: true,
+      },
     });
 
-    return followers;
+    const followersWithFollowStatus = await Promise.all(
+        followers.map(async (follow) => {
+          const isFollowing = await isFollowingUser(follow.follower.id);
+          return { ...follow.follower, isFollowing };
+        })
+    );
+
+    return followersWithFollowStatus;
   } catch (error) {
     console.error(error);
     return [];
   }
 };
 
-export const getFollowingCount = async (userId: string) => {
+export const getFollowing = async (userId: string) => {
   try {
     const following = await db.follow.findMany({
       where: {
         followerId: userId,
       },
+      include: {
+        following: true,
+      },
     });
 
-    return following;
+    return following.map((follow) => follow.following);
   } catch (error) {
     console.error(error);
     return [];

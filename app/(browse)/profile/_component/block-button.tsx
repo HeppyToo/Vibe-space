@@ -10,7 +10,7 @@ interface FollowButtonProps {
   userId: string;
 }
 
-const FollowButton = ({ userId }: FollowButtonProps) => {
+const BlockButton: React.FC<FollowButtonProps> = ({ userId }) => {
   const [isPending, startTransition] = useTransition();
 
   const handleBlock = () => {
@@ -30,4 +30,4 @@ const FollowButton = ({ userId }: FollowButtonProps) => {
   );
 };
 
-export default FollowButton;
+export default BlockButton;

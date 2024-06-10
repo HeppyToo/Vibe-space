@@ -7,7 +7,7 @@ import { onFollow, onUnfollow } from "@/data/follow-cache";
 
 interface FollowButtonProps {
   userId: string;
-  isFollowing: boolean;
+  isFollowing: boolean | { error: string };
 }
 
 const FollowButton = ({ userId, isFollowing }: FollowButtonProps) => {
@@ -44,6 +44,10 @@ const FollowButton = ({ userId, isFollowing }: FollowButtonProps) => {
       handleFollow();
     }
   };
+
+  if (typeof isFollowing === "object" && isFollowing.error) {
+    return <Button disabled>{isFollowing.error}</Button>;
+  }
 
   return (
     <Button disabled={isPending} onClick={onClick}>
