@@ -34,6 +34,8 @@ model User {
 
   blocking  Block[] @relation("Blocking")
   blockedBy Block[] @relation("BlockedBy")
+
+  ReportContent ReportContent[]
 }
 
 model Account {
@@ -132,4 +134,16 @@ model Block {
   @@unique([blockerId, blockedId])
   @@index([blockerId])
   @@index([blockedId])
+}
+
+model ReportContent {
+  id          String @id @default(uuid())
+  reporterId  String
+  description String
+  status      String @default("PENDING")
+
+  reporter User @relation(fields: [reporterId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

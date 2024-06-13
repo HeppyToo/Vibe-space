@@ -34,11 +34,6 @@ export const sidebarLinks: SidebarLink[] = [
     label: "Explore",
   },
   {
-    Icon: LuClapperboard,
-    route: "/reels",
-    label: "Reels",
-  },
-  {
     Icon: RiMessengerLine,
     route: "/messages",
     label: "Messages",

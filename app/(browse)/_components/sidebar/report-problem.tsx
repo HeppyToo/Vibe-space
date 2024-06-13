@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 
 import {
   Dialog,
@@ -8,18 +8,57 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { MdOutlineReportProblem } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/store/use-sidebar";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { ReportSchema } from "@/schemas";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {FormError} from "@/components/form-error";
+import {FormSuccess} from "@/components/form-success";
+import {createProblemReport} from "@/action/report-problem";
 
 export function ReportProblem() {
-  const [message, setMessage] = useState("");
+  const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | undefined>("");
+  const [success, setSuccess] = useState<string | undefined>("");
   const { collapsed } = useSidebar((state) => state);
 
-  const handleSubmit = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(message);
-    setMessage("");
+  const form = useForm<z.infer<typeof ReportSchema>>({
+    resolver: zodResolver(ReportSchema),
+    defaultValues: {
+      content: "",
+    },
+  });
+
+  const onSubmit = (values: z.infer<typeof ReportSchema>) => {
+    setError("");
+    setSuccess("");
+
+    startTransition(() => {
+      return createProblemReport(values)
+          .then((data) => {
+            if (data?.error) {
+              form.reset();
+              setError(data.error);
+            }
+
+            if (data?.success) {
+              form.reset();
+              setSuccess(data.success);
+            }
+          })
+          .catch(() => setError("Something went wrong!"));
+    });
   };
 
   return (
@@ -41,23 +80,39 @@ export function ReportProblem() {
             Report a problem
           </DialogTitle>
         </DialogHeader>
-        <div className="pt-4">
-          <Textarea
-            placeholder="Type your message here."
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            className="w-full pl-2 pt-1 bg-[#1f1f1f] border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3"
-          />
-          <p className="pt-4 text-sm text-muted-foreground">
-            Your Instagram username and browser information will be
-            automatically included in your report.
-          </p>
-        </div>
-        <DialogFooter className="flex flex-row justify-center">
-          <Button type="submit" onClick={handleSubmit} className="w-full">
-            Save changes
-          </Button>
-        </DialogFooter>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <div className="pt-4">
+              <FormField
+                control={form.control}
+                name="content"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Textarea
+                          {...field}
+                          placeholder="Type your message here."
+                        className="w-full pl-2 pt-1 bg-[#1f1f1f] border-none focus-visible:ring-1 focus-visible:ring-offset-1 ring-offset-light-3"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <p className="pt-4 pb-4 text-sm text-muted-foreground">
+                Your Instagram username and browser information will be
+                automatically included in your report.
+              </p>
+              <DialogFooter className="flex flex-row justify-center">
+                <FormError massage={error} />
+                <FormSuccess massage={success} />
+                <Button type="submit" className="w-full" disabled={isPending}>
+                  {isPending ? "Sending..." : "Send"}
+                </Button>
+              </DialogFooter>
+            </div>
+          </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

@@ -24,7 +24,6 @@ export const createPost = async (
     return { error: "User not found. Please ensure the user exists and is logged in." };
   }
 
-  // Create a new post in the database
   try {
     await db.post.create({
       data: {
@@ -32,7 +31,7 @@ export const createPost = async (
         imageUrl,
         tags: tagsArr,
         location,
-        authorId: currentUser.id, // No need for optional chaining as user existence is confirmed
+        authorId: currentUser.id,
       },
     });
   } catch (error) {

@@ -2,20 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
-import {Author} from "@/types";
-
-interface Post {
-  id: string;
-  content: string;
-  location: string;
-  tags: string[];
-  imageUrl: string;
-  published: boolean;
-  authorId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  author: Author;
-}
+import {Post} from "@/types";
 
 interface GridPostListProps {
   posts: Post[] | null | undefined;
