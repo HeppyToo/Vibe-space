@@ -67,6 +67,7 @@ export const {
       if (session.user) {
         session.user.name = token.name;
         session.user.email = token.email ? token.email : "";
+        session.user.username = typeof token.username === 'string' ? token.username : "";
         session.user.isOAuth = token.isOAuth as boolean;
         session.user.isTwoFactorEnabled = token.twoFactorEnabled as boolean;
       }
@@ -84,6 +85,7 @@ export const {
 
       token.isOAuth = !!existingAccount;
       token.name = existingUser.name;
+      token.username = existingUser.username;
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.twoFactorEnabled = existingUser.isTwoFactorEnabled;

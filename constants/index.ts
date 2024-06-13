@@ -57,11 +57,6 @@ export const sidebarMenuLinks: SidebarLink[] = [
     label: "Settings",
   },
   {
-    Icon: FiActivity,
-    route: "/activity",
-    label: "Activity",
-  },
-  {
     Icon: CiSaveDown2,
     route: "/saved",
     label: "Saved",

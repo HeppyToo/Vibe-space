@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { PostCard } from "@/components/browse/post-card";
 import { getPosts } from "@/data/post";
+import {Users} from "@/app/(browse)/(home)/_components/users";
 
 const font = Poppins({
   subsets: ["latin"],
@@ -35,7 +36,9 @@ const Home = async () => {
             ))}
           </ul>
         </div>
-        <div className="w-1/4 mt-3">Юзери</div>
+        <div className="w-1/4 mt-3">
+            <Users/>
+        </div>
       </main>
   );
 };

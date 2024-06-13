@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
@@ -41,7 +41,7 @@ const UserPage = async ({ params }: UserPageProps) => {
   const user = await getUserByUserId(params.userId);
 
   if (!user) {
-    notFound()
+    notFound();
   }
 
   const posts = await getPostsByUserId(user.id);
@@ -53,6 +53,10 @@ const UserPage = async ({ params }: UserPageProps) => {
   const following = await getFollowing(user.id);
 
   const isBlocked = await isBlockedByUser(user.id);
+
+    if (isBlocked) {
+        notFound();
+    }
 
   return (
     <div className="flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar text-white">
