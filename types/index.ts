@@ -12,7 +12,7 @@ export interface Author {
     createdAt: Date;
     updatedAt: Date;
     isTwoFactorEnabled: boolean;
-    isFollowing: boolean | { error: string; }; // Add this line
+    isFollowing?: boolean | { error: string; }; // Add this line
 }
 
 export interface Post {
@@ -26,5 +26,5 @@ export interface Post {
     createdAt: Date;
     updatedAt: Date;
     author: Author;
-    isFollowing: boolean | { error: string; };
+    isFollowing?: boolean | { error: string; };
 }

@@ -73,7 +73,7 @@ export const ModalFollowers = ({
                         </div>
                       </Link>
                       <div className="flex justify-center items-center">
-                        <FollowButton userId={author.id} isFollowing={author.isFollowing} />
+                        <FollowButton userId={author.id} isFollowing={author.isFollowing || false} />
                       </div>
                     </div>
                 );

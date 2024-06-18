@@ -24,8 +24,6 @@ interface User {
 export const RecommendedUsers = async () => {
     const users =await getRecommended();
 
-    console.log(users)
-
     return (
         <div className="pt-5">
             {users.map((user) => (

@@ -179,7 +179,14 @@ export const getFollowing = async (userId: string) => {
       },
     });
 
-    return following.map((follow) => follow.following);
+    const followingWithFollowStatus = await Promise.all(
+        following.map(async (follow) => {
+          const isFollowing = await isFollowingUser(follow.following.id);
+          return { ...follow.following, isFollowing };
+        })
+    );
+
+    return followingWithFollowStatus;
   } catch (error) {
     console.error(error);
     return [];

@@ -52,6 +52,8 @@ const UserPage = async ({ params }: UserPageProps) => {
   const followers = await getFollowers(user.id);
   const following = await getFollowing(user.id);
 
+  console.log(followers, following)
+
   const isBlocked = await isBlockedByUser(user.id);
 
     if (isBlocked) {

@@ -6,13 +6,15 @@ import {X} from 'lucide-react';
 import { CiSearch } from "react-icons/ci";
 import {Input} from '@/components/ui/input';
 import {Author} from "@/types";
+import {cn} from "@/lib/utils";
 
 interface SearchProps {
     value: string;
     setValue: (value: string) => void;
     filterFunction: (value: string) => any;
+    className?: string;
 }
-export const Search = ({value, setValue, filterFunction} : SearchProps) => {
+export const Search = ({value, setValue, filterFunction, className} : SearchProps) => {
     const onClear = () => {
         setValue('');
     };
@@ -22,12 +24,14 @@ export const Search = ({value, setValue, filterFunction} : SearchProps) => {
     }, [value, filterFunction])
 
     return (
-        <div className="relative">
+        <div className={cn("relative",className)}>
             <Input
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder="Search"
-                className="rounded focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 pr-10"
+                className={cn(
+                    "rounded focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0 pr-10"
+                )}
             />
             {!value && (
                 <CiSearch

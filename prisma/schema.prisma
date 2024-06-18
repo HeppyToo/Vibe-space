@@ -36,6 +36,8 @@ model User {
   blockedBy Block[] @relation("BlockedBy")
 
   ReportContent ReportContent[]
+  Like          Like[]
+  SavedPost     SavedPost[]
 }
 
 model Account {
@@ -95,16 +97,18 @@ model twoFactorConfirmation {
 }
 
 model Post {
-  id        String   @id @default(cuid())
+  id        String      @id @default(cuid())
   content   String
   location  String
   tags      String[]
-  imageUrl  String   @db.Text
-  published Boolean  @default(false)
+  imageUrl  String      @db.Text
+  published Boolean     @default(false)
   authorId  String
-  author    User     @relation(fields: [authorId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  author    User        @relation(fields: [authorId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Like      Like[]
+  SavedPost SavedPost[]
 }
 
 model Follow {
@@ -146,4 +150,34 @@ model ReportContent {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model SavedPost {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
 }
