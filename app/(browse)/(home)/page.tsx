@@ -28,7 +28,7 @@ const Home = async () => {
           >
             Тут будуть сторіси
           </ul>
-          <ul className="flex flex-col flex-1 gap-9 w-full pb-5">
+          <ul className="flex flex-col flex-1 gap-9 w-full pb-5 pl-2">
             {posts.map((post: any) => (
               <li key={post.id} className="flex justify-center w-full">
                 <PostCard post={post} />
@@ -36,7 +36,7 @@ const Home = async () => {
             ))}
           </ul>
         </div>
-        <div className="w-1/4 mt-3">
+        <div className="hidden lg:flex w-1/4 mt-3">
             <Users/>
         </div>
       </main>

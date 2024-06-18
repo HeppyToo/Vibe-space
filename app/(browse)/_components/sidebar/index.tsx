@@ -6,7 +6,7 @@ import { Toggle } from "@/app/(browse)/_components/sidebar/toggle";
 export const Sidebar = () => {
   return (
     <Wrapper>
-      <aside className="flex flex-col justify-between pt-4 lg:pt-0 h-full">
+      <aside className="hidden md:flex flex-col justify-between pt-4 lg:pt-0 h-full">
         <Toggle />
         <Links />
         <BurgerMenu />

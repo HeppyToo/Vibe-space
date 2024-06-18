@@ -5,7 +5,7 @@ import Link from "next/link";
 export const Users = () => {
 
     return (
-      <aside className="pt-10 pr-10">
+      <aside className="fixed pl-3 lg:pt-10 pr-10">
         <SessionUser />
         <div className="flex justify-between">
           <p className="pt-5 text-gray-500 text-sm">Suggested for you</p>

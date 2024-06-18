@@ -1,9 +1,22 @@
+import { db } from "@/lib/db";
+import {currentUser} from "@/lib/auth";
 
 export const getPosts = async () => {
+  let userId;
+
+  try {
+    const self = await currentUser();
+    userId = self?.id;
+  } catch {
+    userId = null;
+  }
+
   try {
     const posts = await db.post.findMany({
       include: {
-        author: true, // Include author data
+        author: true,
+        Like: true, // Include Like data
+        SavedPost: true, // Include SavedPost data
       },
     });
 
@@ -11,14 +24,25 @@ export const getPosts = async () => {
       return null;
     }
 
-    return posts;
+    const postsWithLikeCountAndIsLikedAndIsSaved = posts.map(post => {
+      const likeCount = post.Like.length;
+      const isLiked = post.Like.some(like => like.userId === userId);
+      const isSaved = post.SavedPost.some(savedPost => savedPost.userId === userId);
+
+      return {
+        ...post,
+        likeCount,
+        isLiked,
+        isSaved,
+      };
+    });
+
+    return postsWithLikeCountAndIsLikedAndIsSaved;
   } catch (error) {
     console.error(error);
     return null;
   }
 };
-
-import { db } from "@/lib/db";
 
 export const getPostsByUserId = async (userId: string) => {
   try {

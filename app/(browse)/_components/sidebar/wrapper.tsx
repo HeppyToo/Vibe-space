@@ -20,7 +20,7 @@ export const Wrapper = ({ children }: WrapperProps) => {
 
   if (!isClient) {
     return (
-      <aside className="fixed left-0 flex flex-col w-[70px] lg:w-60 h-full justify-between bg-black border-r border-slate-800/40 Z-50">
+      <aside className="hidden md:flex fixed left-0 flex-col w-[70px] lg:w-60 h-full justify-between bg-black border-r border-slate-800/40 Z-50">
         <ToggleSkeleton />
         <LinksSkeleton />
         <BurgerMenuSkeleton />
@@ -31,7 +31,7 @@ export const Wrapper = ({ children }: WrapperProps) => {
   return (
     <aside
       className={cn(
-        "fixed left-0 flex flex-col justify-between w-60 h-screen bg-black border-r border-slate-800/40 text-white Z-50",
+        "hidden fixed left-0 md:flex flex-col justify-between w-60 h-screen bg-black border-r border-slate-800/40 text-white Z-50",
         collapsed && "w-[70px]",
       )}
     >
