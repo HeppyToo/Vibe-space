@@ -1,6 +1,12 @@
 import { db } from "@/lib/db";
+import {Account} from "@/types";
 
-export const getAccountByUserId = async (userId: string) => {
+export const getAccountByUserId = async (userId: string) : Promise<Account | null> => {
+  if(!userId) {
+    console.error("Invalid userId provided")
+    return null
+  }
+
   try {
     const account = await db.account.findFirst({
       where: {
@@ -8,8 +14,13 @@ export const getAccountByUserId = async (userId: string) => {
       },
     });
 
+    if (!account) {
+      console.warn(`No account found for userId: ${userId}`);
+    }
+
     return account;
-  } catch {
+  } catch (error){
+    console.error(`Error fetching account for userId: ${userId}`, error);
     return null;
   }
 };

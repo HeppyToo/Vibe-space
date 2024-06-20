@@ -1,19 +1,19 @@
 "use client"
 
 import {CiSearch} from "react-icons/ci";
-import {Author} from "@/types";
+import {User} from "@/types";
 import {UserCard} from "@/app/(browse)/search/_component/user-card";
 import React, {useState} from "react";
 import {Search} from "@/components/browse/search";
 
 interface ClientCardComponentProps {
-    users: Author[];
+    users: User[];
 }
 
-export const ClientCardComponent: React.FC<ClientCardComponentProps> = ({ users }) => {
+export const SearchCardComponent: React.FC<ClientCardComponentProps> = ({ users }) => {
     const [searchQuery, setSearchQuery] = useState("");
 
-    const filteredAuthors = users.filter((author: Author) => {
+    const filteredAuthors = users.filter((author: User) => {
         const name = author.name ? author.name.toLowerCase() : '';
         const username = author.username ? author.username.toLowerCase() : '';
 
@@ -33,7 +33,7 @@ export const ClientCardComponent: React.FC<ClientCardComponentProps> = ({ users 
             </div>
 
             <div className="w-full flex flex-col items-center gap-6 py-10 pt-5 max-w-5xl px-4">
-                {filteredAuthors?.map((user: Author) => <UserCard key={user.id} user={user}/>)}
+                {filteredAuthors?.map((user: User) => <UserCard key={user.id} user={user}/>)}
             </div>
         </>
     )

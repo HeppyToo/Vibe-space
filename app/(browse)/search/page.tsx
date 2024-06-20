@@ -1,6 +1,6 @@
 import { getAllUsers } from "@/data/users";
 
-import {ClientCardComponent} from "@/app/(browse)/search/_component/client-card-component";
+import {SearchCardComponent} from "@/app/(browse)/search/_component/search-card-component";
 
 const SearchPage = async () => {
   const users = await getAllUsers();
@@ -9,7 +9,7 @@ const SearchPage = async () => {
 
   return (
     <div className="text-white h-screen flex flex-col flex-1 items-center py-10 px-5 md:p-14 custom-scrollbar w-full">
-      <ClientCardComponent users={users}/>
+      <SearchCardComponent users={users}/>
     </div>
   );
 };

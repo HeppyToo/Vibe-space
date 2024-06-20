@@ -39,11 +39,6 @@ export const sidebarLinks: SidebarLink[] = [
     label: "Messages",
   },
   {
-    Icon: FaRegHeart,
-    route: "/notifications",
-    label: "Notifications",
-  },
-  {
     Icon: IoMdAddCircleOutline,
     route: "/create",
     label: "Create",

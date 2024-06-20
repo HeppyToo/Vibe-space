@@ -11,7 +11,7 @@ body,
 }
 
 body {
-    @apply custom-scrollbar;
+    @apply custom-scrollbar text-white;
 }
 
 * {

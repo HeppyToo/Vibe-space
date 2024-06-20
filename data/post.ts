@@ -28,12 +28,14 @@ export const getPosts = async () => {
       const likeCount = post.Like.length;
       const isLiked = post.Like.some(like => like.userId === userId);
       const isSaved = post.SavedPost.some(savedPost => savedPost.userId === userId);
+      const saveCount = post.SavedPost.length;
 
       return {
         ...post,
         likeCount,
         isLiked,
         isSaved,
+        saveCount,
       };
     });
 

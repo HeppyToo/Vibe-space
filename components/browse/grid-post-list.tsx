@@ -44,7 +44,7 @@ export const GridPostList = ({
             {showUser && (
               <div className="flex items-center justify-start gap-2 flex-1">
                 <Link
-                  href={`/profile/${post.authorId}`}
+                  href={`/profile/${post.author.id}`}
                   className="flex justify-center items-center"
                 >
                   <Avatar className="w-6 h-6">

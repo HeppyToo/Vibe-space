@@ -52,8 +52,6 @@ const UserPage = async ({ params }: UserPageProps) => {
   const followers = await getFollowers(user.id);
   const following = await getFollowing(user.id);
 
-  console.log(followers, following)
-
   const isBlocked = await isBlockedByUser(user.id);
 
     if (isBlocked) {
@@ -88,10 +86,10 @@ const UserPage = async ({ params }: UserPageProps) => {
 
             <div className="flex gap-8 mt-1 items-center justify-center xl:justify-start flex-wrap z-20">
               <StatBlock value={posts?.length} label="Posts" />
-              <ModalFollowers authors={followers} label="Followers">
+              <ModalFollowers users={followers} label="Followers">
                 <StatBlock value={followers.length} label="Followers" />
               </ModalFollowers>
-              <ModalFollowers authors={following} label="Following">
+              <ModalFollowers users={following} label="Following">
                 <StatBlock value={following.length} label="Following" />
               </ModalFollowers>
             </div>

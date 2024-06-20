@@ -6,26 +6,7 @@ import { FaUser } from "react-icons/fa";
 import { multiFormatDateString } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { PostStats } from "@/components/browse/post-stats";
-
-interface Post {
-  id: string;
-  content: string;
-  location: string;
-  tags: string[];
-  imageUrl: string;
-  published: boolean;
-  authorId: string;
-  createdAt: string;
-  updatedAt: string;
-  likeCount: number;
-  isLiked: boolean;
-  isSaved: boolean;
-  author: {
-    id: string;
-    image: string;
-    name: string;
-  };
-}
+import {Post} from "@/types";
 
 interface PostCardProps {
   post: Post;

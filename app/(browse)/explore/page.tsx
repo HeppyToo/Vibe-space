@@ -1,9 +1,14 @@
-import React from 'react';
+import {getPosts} from "@/data/post";
+import {PostCardComponent} from "@/app/(browse)/explore/_components/post-card-component";
 
-const ExplorePage = () => {
+const ExplorePage = async () => {
+    const posts = await getPosts();
+
+    if(!posts) { return (<div> No posts found </div>)}
+
     return (
-        <div className="text-white h-screen">
-            Explore Page
+        <div className="flex flex-col flex-1 items-center overflow-scroll py-10 px-5 md:p-14 custom-scrollbar h-screen">
+            <PostCardComponent posts={posts}/>
         </div>
     );
 };

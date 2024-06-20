@@ -10,7 +10,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Author } from "@/types";
+import { User } from "@/types";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import Link from "next/link";
@@ -19,18 +19,18 @@ import { Search } from "@/components/browse/search";
 
 interface ModalFollowersProps {
   children: React.ReactNode;
-  authors: Author[];
+  users: User[];
   label: string;
 }
 
 export const ModalFollowers = ({
   children,
-  authors,
+  users,
   label,
 }: ModalFollowersProps) => {
   const [searchQuery, setSearchQuery] = useState("");
 
-  const filteredAuthors = authors.filter((author: Author) => {
+  const filteredAuthors = users.filter((author: User) => {
     const name = author.name ? author.name.toLowerCase() : '';
     const username = author.username ? author.username.toLowerCase() : '';
 
@@ -47,7 +47,7 @@ export const ModalFollowers = ({
         </DialogHeader>
         <div className="grid gap-4 py-4">
           <Search value={searchQuery} setValue={setSearchQuery} filterFunction={() => filteredAuthors}/>
-          {authors.length === 0 && <p>has no {label}</p>}
+          {users.length === 0 && <p>has no {label}</p>}
           {filteredAuthors.length === 0 ? (
               <p>{label} not found </p>
           ) : (

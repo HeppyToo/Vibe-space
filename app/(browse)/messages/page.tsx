@@ -1,11 +1,13 @@
 import React from 'react';
+import UserList from "@/app/(browse)/messages/user-list";
 
-const Page = () => {
+
+const MessagesPage = () => {
     return (
         <div>
-            
+            {/*<UserList />*/}
         </div>
     );
 };
 
-export default Page;
+export default MessagesPage;
