@@ -10,12 +10,8 @@ import {
     DropdownMenuGroup,
     DropdownMenuItem,
     DropdownMenuLabel,
-    DropdownMenuPortal,
     DropdownMenuSeparator,
     DropdownMenuShortcut,
-    DropdownMenuSub,
-    DropdownMenuSubContent,
-    DropdownMenuSubTrigger,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import {CiFilter} from "react-icons/ci";
@@ -25,60 +21,78 @@ import {Post} from "@/types";
 
 interface SortButtonProps {
     posts: Post[];
+    setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
 }
-export function SortButton({ posts }: SortButtonProps) {
-    function sortPostsByLikes(posts: Post[]): Post[] {
-        return posts.sort((a, b) => b.likeCount - a.likeCount);
+
+export function SortButton({ posts, setPosts }: SortButtonProps) {
+    function sortPostsByLikes() {
+        const sortedPosts = [...posts].sort((a, b) => b.likeCount - a.likeCount);
+        setPosts(sortedPosts);
     }
 
-    function sortPostsBySaved(posts: Post[]): Post[] {
-        return posts.sort((a, b) => b.saveCount - a.saveCount);
+    function sortPostsBySaved() {
+        const sortedPosts = [...posts].sort((a, b) => b.saveCount - a.saveCount);
+        setPosts(sortedPosts);
     }
 
-    function sortPostsByDateDescending(posts: Post[]): Post[] {
-        return posts.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+    function sortPostsByDateDescending() {
+        const sortedPosts = [...posts].sort(
+            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setPosts(sortedPosts);
     }
 
-    function sortPostsByDateAscending(posts: Post[]): Post[] {
-        return posts.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+    function sortPostsByDateAscending() {
+        const sortedPosts = [...posts].sort(
+            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+        setPosts(sortedPosts);
     }
 
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="outline">
-          <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-white">
-            All
-          </p>
-          <CiFilter className="h-5 w-5" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56 bg-[#1f1f1f] border-slate-600/40 text-white">
-        <DropdownMenuLabel>Sort by</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <FaArrowUp className="mr-2 h-4 w-4" />
-            <span>Old</span>
-            <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <FaArrowDown className="mr-2 h-4 w-4" />
-            <span>New</span>
-            <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CiHeart className="mr-2 h-4 w-4" />
-            <span>Likes</span>
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <CiBookmark className="mr-2 h-4 w-4" />
-            <span>Saved</span>
-            <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-          </DropdownMenuItem>
-        </DropdownMenuGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="outline" className="gap-x-2">
+                    <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-white">
+                        All
+                    </p>
+                    <CiFilter className="h-5 w-5" />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56 bg-[#1f1f1f] border-slate-600/40 text-white">
+                <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                    <DropdownMenuItem onClick={sortPostsByDateAscending}>
+                        <div className="flex">
+                            <FaArrowUp className="mr-2 h-4 w-4" />
+                            <span>Old</span>
+                        </div>
+                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={sortPostsByDateDescending}>
+                        <div className="flex">
+                            <FaArrowDown className="mr-2 h-4 w-4" />
+                            <span>New</span>
+                        </div>
+                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={sortPostsByLikes}>
+                        <div className="flex">
+                            <CiHeart className="mr-2 h-4 w-4" />
+                            <span>Likes</span>
+                        </div>
+                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={sortPostsBySaved}>
+                        <div className="flex">
+                            <CiBookmark className="mr-2 h-4 w-4" />
+                            <span>Saved</span>
+                        </div>
+                        <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
+                    </DropdownMenuItem>
+                </DropdownMenuGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
+    );
 }

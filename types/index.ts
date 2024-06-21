@@ -1,4 +1,5 @@
-import {UserRole} from "@prisma/client";
+import { UserRole } from "@prisma/client";
+
 export interface User {
     id: string;
     name: string;
@@ -12,35 +13,22 @@ export interface User {
     createdAt: Date;
     updatedAt: Date;
     isTwoFactorEnabled: boolean;
-    isFollowing?: boolean | { error: string; }; // Add this line
+    isFollowing?: boolean | { error: string; }; // Optional property
 }
 
 export interface Post {
     id: string;
-    title: string;
     content: string;
+    location: string;
     imageUrl: string;
     tags: string[];
-    author: {
-        id: string;
-        name: string;
-        username: string | null;
-        email: string;
-        emailVerified: Date | null;
-        image: string | null;
-        bio: string | null;
-        password: string | null;
-        role: UserRole;
-        createdAt: Date;
-        updatedAt: Date;
-        isTwoFactorEnabled: boolean;
-    };
-    likeCount: number;
-    saveCount: number;
-    isLiked: boolean;
-    isSaved: boolean;
-    createdAt: Date;
-    updatedAt: Date;
+    author: User;
+    likeCount?: number;
+    saveCount?: number;
+    isLiked?: boolean;
+    isSaved?: boolean;
+    createdAt: Date | string;
+    updatedAt: Date | string;
 }
 
 export interface Account {
@@ -49,7 +37,7 @@ export interface Account {
     type: string;
     provider: string;
     providerAccountId: string;
-    refresh_token: string | null ;
+    refresh_token: string | null;
     access_token: string | null;
     expires_at: number | null;
     token_type: string | null;

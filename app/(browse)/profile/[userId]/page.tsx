@@ -54,9 +54,9 @@ const UserPage = async ({ params }: UserPageProps) => {
 
   const isBlocked = await isBlockedByUser(user.id);
 
-    if (isBlocked) {
-        notFound();
-    }
+  if (isBlocked) {
+    notFound();
+  }
 
   return (
     <div className="flex flex-col items-center flex-1 gap-10 overflow-scroll py-10 px-5 md:p-14 custom-scrollbar text-white">
@@ -97,7 +97,7 @@ const UserPage = async ({ params }: UserPageProps) => {
           <div className="flex justify-center gap-4">
             <div className={`${user?.id !== loggedInUser?.id && "hidden"}`}>
               <Link
-                href={`/update-profile/${loggedInUser?.id}`}
+                href={`/settings`}
                 className={`h-12 bg-[#1f1f1f] px-5 flex justify-center items-center gap-2 rounded-lg ${
                   user?.id !== loggedInUser?.id && "hidden"
                 }`}
