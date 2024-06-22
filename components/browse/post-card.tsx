@@ -2,11 +2,13 @@
 
 import Link from "next/link";
 import Image from "next/image";
+
 import { FaUser } from "react-icons/fa";
 import { multiFormatDateString } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PostStats } from "@/components/browse/post-stats";
-import {Post} from "@/types";
+
+import { Post } from "@/types";
+import {PostStats} from "@/components/browse/post-stats";
 
 interface PostCardProps {
   post: Post;
@@ -70,7 +72,12 @@ export const PostCard = ({ post }: PostCardProps) => {
             </li>
           ))}
         </ul>
-        <PostStats postId={post.id} isLiked={post.isLiked} isSaved={post.isSaved} likeCount={post.likeCount}/>
+        <PostStats
+            postId={post.id}
+            isLiked={post.isLiked !== undefined ? post.isLiked : false}
+            isSaved={post.isSaved !== undefined ? post.isSaved : false}
+            likeCount={post.likeCount !== undefined ? post.likeCount : 0}
+        />
       </div>
     </div>
   );

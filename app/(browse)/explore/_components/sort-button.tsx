@@ -26,12 +26,12 @@ interface SortButtonProps {
 
 export function SortButton({ posts, setPosts }: SortButtonProps) {
     function sortPostsByLikes() {
-        const sortedPosts = [...posts].sort((a, b) => b.likeCount - a.likeCount);
+        const sortedPosts = [...posts].sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0));
         setPosts(sortedPosts);
     }
-
+    
     function sortPostsBySaved() {
-        const sortedPosts = [...posts].sort((a, b) => b.saveCount - a.saveCount);
+        const sortedPosts = [...posts].sort((a, b) => (b.saveCount ?? 0) - (a.saveCount ?? 0));
         setPosts(sortedPosts);
     }
 
