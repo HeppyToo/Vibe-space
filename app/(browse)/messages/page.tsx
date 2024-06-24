@@ -1,10 +1,14 @@
-import UserList from "@/app/(browse)/messages/user-list";
-import {getAllUsers} from "@/data/users";
+"use client"
 
-const MessagesPage = async () => {
-  const users = await getAllUsers()
+import EmptyState from "@/components/browse/empty-state";
 
-  return <div className="flex justify-between h-screen"><UserList items={users}/><div className="flex flex-1 justify-center"><p>Chat</p></div></div>;
-};
+const People = () => {
 
-export default MessagesPage;
+    return (
+        <div className="hidden lg:block lg:pl-80 h-screen">
+            <EmptyState />
+        </div>
+    );
+}
+
+export default People;

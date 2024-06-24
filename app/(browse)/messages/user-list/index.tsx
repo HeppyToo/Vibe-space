@@ -1,5 +1,3 @@
-"use client"
-
 import React, {useEffect} from "react";
 import UserBox from "@/app/(browse)/messages/user-list/user-box";
 import {User} from "@prisma/client";
@@ -10,14 +8,9 @@ interface UserListProps {
 }
 
 const UserList: React.FC<UserListProps> = ({ items }) => {
-    const { onCollapse } = useSidebar();
-
-    useEffect(() => {
-        onCollapse();
-    }, [onCollapse]);
 
     return (
-        <aside className="fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r border-slate-600/40 block w-full left-0">
+        <aside className="fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-[310px] lg:block overflow-y-auto border-r border-slate-600/40 block w-full left-0">
             <div className="px-5">
                 <div className="flex-col">
                     <div className="text-2xl font-bold text-white py-4">

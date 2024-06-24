@@ -26,7 +26,7 @@ model User {
   updatedAt             DateTime               @updatedAt
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
-  twoFactorConfirmation twoFactorConfirmation?
+  twoFactorConfirmation TwoFactorConfirmation?
   posts                 Post[]
 
   following  Follow[] @relation("Following")
@@ -38,6 +38,10 @@ model User {
   ReportContent ReportContent[]
   Like          Like[]
   SavedPost     SavedPost[]
+
+  conversations UserConversation[]
+  seenMessages  SeenMessage[]
+  messages      Message[]
 }
 
 model Account {
@@ -87,9 +91,8 @@ model TwoFactorToken {
   @@unique([email, token])
 }
 
-model twoFactorConfirmation {
-  id String @id @default(cuid())
-
+model TwoFactorConfirmation {
+  id     String @id @default(cuid())
   userId String
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -112,7 +115,7 @@ model Post {
 }
 
 model Follow {
-  id          String @id @default(uuid())
+  id          String @id @default(cuid())
   followerId  String
   followingId String
 
@@ -128,7 +131,7 @@ model Follow {
 }
 
 model Block {
-  id        String @id @default(uuid())
+  id        String @id @default(cuid())
   blockerId String
   blockedId String
 
@@ -141,7 +144,7 @@ model Block {
 }
 
 model ReportContent {
-  id          String @id @default(uuid())
+  id          String @id @default(cuid())
   reporterId  String
   description String
   status      String @default("PENDING")
@@ -180,4 +183,55 @@ model SavedPost {
   @@unique([userId, postId])
   @@index([userId])
   @@index([postId])
+}
+
+model Conversation {
+  id            String   @id @default(cuid())
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
+
+  messages Message[]
+  users    UserConversation[]
+}
+
+model Message {
+  id             String   @id @default(cuid())
+  body           String?
+  image          String?
+  createdAt      DateTime @default(now())
+  conversationId String
+  senderId       String
+
+  conversation Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender       User          @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  seenMessages SeenMessage[]
+}
+
+model UserConversation {
+  id             String @id @default(cuid())
+  userId         String
+  conversationId String
+  email          String
+
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, conversationId])
+  @@index([userId])
+  @@index([conversationId])
+}
+
+model SeenMessage {
+  id        String @id @default(cuid())
+  userId    String
+  messageId String
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, messageId])
+  @@index([userId])
+  @@index([messageId])
 }

@@ -1,4 +1,5 @@
-import { UserRole } from "@prisma/client";
+import {Conversation, UserRole} from "@prisma/client";
+import {Message} from "postcss";
 
 export interface User {
     id: string;
@@ -45,3 +46,13 @@ export interface Account {
     id_token: string | null;
     session_state: string | null;
 }
+
+export type FullMessageType = Message & {
+    sender: User,
+    seen: User[]
+};
+
+export type FullConversationType = Conversation & {
+    users: User[];
+    messages: FullMessageType[]
+};

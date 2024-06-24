@@ -6,21 +6,6 @@ import {getRecommended} from "@/data/recomended";
 import {UserRole} from "@prisma/client";
 import FollowButton from "@/app/(browse)/profile/_component/follow-button";
 
-interface User {
-    id: string;
-    name: string;
-    username: string | null;
-    email: string;
-    emailVerified: Date | null;
-    image: string | null;
-    bio: string | null;
-    password: string | null;
-    role: UserRole;
-    createdAt: Date;
-    updatedAt: Date;
-    isTwoFactorEnabled: boolean;
-}
-
 export const RecommendedUsers = async () => {
     const users =await getRecommended();
 
