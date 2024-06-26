@@ -104,8 +104,8 @@ export function ReportProblem() {
                 automatically included in your report.
               </p>
               <DialogFooter className="flex flex-row justify-center">
-                <FormError massage={error} />
-                <FormSuccess massage={success} />
+                <FormError message={error} />
+                <FormSuccess message={success} />
                 <Button type="submit" className="w-full" disabled={isPending}>
                   {isPending ? "Sending..." : "Send"}
                 </Button>

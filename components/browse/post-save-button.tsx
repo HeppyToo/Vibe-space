@@ -1,63 +1,57 @@
 "use client";
 
-import React, {useTransition} from "react";
-import {Button} from "@/components/ui/button";
-import {toast} from "sonner";
-import {onSave, onUnSave} from "@/data/save-cashe";
+import React, { useTransition, useCallback } from "react";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
 import {CiBookmark} from "react-icons/ci";
+import {onSave, onUnSave} from "@/data/save-cashe";
 import {FaBookmark} from "react-icons/fa";
 
-interface FollowButtonProps {
+interface PostSaveButtonProps {
     postId: string;
     isSaved: boolean | { error: string };
     setIsHovered: (value: boolean) => void;
     isHovered: boolean;
 }
 
-export const PostSaveButton = ({
-                                   postId,
-                                   isSaved,
-                                   setIsHovered,
-                                   isHovered,
-                               }: FollowButtonProps) => {
+export const PostSaveButton: React.FC<PostSaveButtonProps> = ({
+                                                                  postId,
+                                                                  isSaved,
+                                                                  setIsHovered,
+                                                                  isHovered,
+                                                              }) => {
     const [isPending, startTransition] = useTransition();
 
-    const handleLike = () => {
+    const handleSave = useCallback(() => {
         startTransition(() => {
             onSave(postId)
-                .then((data) => {
-                    toast.success(`You'll save this post.`);
-                })
-                .catch(() => {
-                    toast.error("Something went wrong");
-                });
+                .then(() => toast.success("You've saved this post."))
+                .catch(() => toast.error("Something went wrong"));
         });
-    };
+    }, [postId]);
 
-    const handleUnLike = () => {
+    const handleUnSave = useCallback(() => {
         startTransition(() => {
             onUnSave(postId)
-                .then((data) => {
-                    toast.success(`You don't save this post`);
-                })
-                .catch(() => {
-                    toast.error("Something went wrong");
-                });
+                .then(() => toast.success("You unsaved this post."))
+                .catch(() => toast.error("Something went wrong"));
         });
-    };
+    }, [postId]);
 
     const onClick = () => {
-        if (isSaved) {
-            handleUnLike();
-        } else {
-            handleLike();
-        }
+        isSaved ? handleUnSave() : handleSave();
     };
 
     if (typeof isSaved === "object" && isSaved.error) {
         return <Button disabled>{isSaved.error}</Button>;
     }
 
+    const renderIcon = () => {
+        const IconComponent = isSaved ? FaBookmark : CiBookmark;
+        const iconColor = isSaved ? (isHovered ? "#2a7396" : "#47c2ff") : "white";
+
+        return <IconComponent className="w-[24px] h-[24px]" color={iconColor} />;
+    };
 
     return (
         <Button
@@ -67,19 +61,7 @@ export const PostSaveButton = ({
             onClick={onClick}
             className="flex bg-[#1f1f1f] hover:bg-[#1f1f1f] p-0"
         >
-            {isSaved ? (
-                isHovered ? (
-                    <FaBookmark className="w-[24px] h-[24px]" color="#2a7396"/>
-                ) : (
-                    <FaBookmark className="w-[24px] h-[24px]" color="#47c2ff"/>
-                )
-            ) : (
-                isHovered ? (
-                    <FaBookmark className="w-[24px] h-[24px]" color="#2a7396"/>
-                ) : (
-                    <CiBookmark className="w-[24px] h-[24px]" color="white"/>
-                )
-            )}
+            {renderIcon()}
         </Button>
     );
-}
+};

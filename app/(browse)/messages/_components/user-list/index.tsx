@@ -1,5 +1,5 @@
 import React, {useEffect} from "react";
-import UserBox from "@/app/(browse)/messages/user-list/user-box";
+import UserBox from "@/app/(browse)/messages/_components/user-list/user-box";
 import {User} from "@prisma/client";
 import {useSidebar} from "@/store/use-sidebar";
 

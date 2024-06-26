@@ -1,11 +1,23 @@
 services:
-  server:
+  frontend:
     build:
       context: .
-    environment: й
-      ENV NODE_ENV: production
+      dockerfile: Dockerfile
+
     ports:
       - 3000:3000
-    volumes:
-      - .:/app
-      - /app/node_modules
+
+    develop:
+      watch:
+        - path: ./package.json
+          action: rebuild
+        - path: ./next.config.js
+          action: rebuild
+        - path: ./package-lock.json
+          action: rebuild
+        - path: .
+          target: /app
+          action: sync
+
+volumes:
+  seekEvents:

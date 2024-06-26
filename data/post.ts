@@ -67,3 +67,44 @@ export const getPostsByUserId = async (userId: string) => {
     return null;
   }
 };
+
+export const getPostById = async (postId: string) => {
+  try {
+    const post = await db.post.findUnique({
+      where: {
+        id: postId,
+      },
+      include: {
+        author: true, // Include author data
+      },
+    });
+
+    if (!post) {
+      return null;
+    }
+
+    return post;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+export const deletePostById = async (postId: string) => {
+  try {
+    const post = await db.post.delete({
+      where: {
+        id: postId,
+      },
+    });
+
+    if (!post) {
+      return null;
+    }
+
+    return post;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};

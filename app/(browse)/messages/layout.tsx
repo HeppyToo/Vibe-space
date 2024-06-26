@@ -1,6 +1,6 @@
 
 import { getAllUsers } from "@/data/users";
-import UserList from "@/app/(browse)/messages/user-list";
+import UserList from "./_components/user-list";
 
 export default async function UsersLayout({
   children,
