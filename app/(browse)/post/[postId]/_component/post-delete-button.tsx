@@ -5,7 +5,8 @@ import { MdDeleteOutline } from "react-icons/md";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { deletePostById } from "@/data/post";
-import {onDeletePost} from "@/data/post-cashe";
+import { onDeletePost } from "@/data/post-cashe";
+import { useRouter } from "next/navigation";
 
 interface LikedPostButtonProps {
   postId: string;
@@ -19,11 +20,15 @@ export const PostDeleteButton: React.FC<LikedPostButtonProps> = ({
   postIdCreator,
 }) => {
   const [isPending, startTransition] = useTransition();
+  const { push } = useRouter();
 
   const handleDeletePost = useCallback(() => {
     startTransition(() => {
       onDeletePost(postId)
-        .then(() => toast.success("You'll delet this post."))
+        .then(() => {
+          toast.success("You'll delete this post.");
+          push("/");
+        })
         .catch(() => toast.error("Something went wrong"));
     });
   }, [postId]);

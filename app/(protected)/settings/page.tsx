@@ -212,8 +212,8 @@ const SettingsPage = () => {
                 </>
               )}
             </div>
-            <FormSuccess massage={success} />
-            <FormError massage={error} />
+            <FormSuccess message={success} />
+            <FormError message={error} />
             <Button type="submit" disabled={isPending}>
               Save
             </Button>

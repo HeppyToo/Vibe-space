@@ -69,6 +69,15 @@ export const getPostsByUserId = async (userId: string) => {
 };
 
 export const getPostById = async (postId: string) => {
+  let userId;
+
+  try {
+    const self = await currentUser();
+    userId = self?.id;
+  } catch {
+    userId = null;
+  }
+
   try {
     const post = await db.post.findUnique({
       where: {
@@ -76,6 +85,8 @@ export const getPostById = async (postId: string) => {
       },
       include: {
         author: true, // Include author data
+        Like: true, // Include Like data
+        SavedPost: true, // Include SavedPost data
       },
     });
 
@@ -83,7 +94,18 @@ export const getPostById = async (postId: string) => {
       return null;
     }
 
-    return post;
+    const likeCount = post.Like.length;
+    const isLiked = post.Like.some(like => like.userId === userId);
+    const isSaved = post.SavedPost.some(savedPost => savedPost.userId === userId);
+    const saveCount = post.SavedPost.length;
+
+    return {
+      ...post,
+      likeCount,
+      isLiked,
+      isSaved,
+      saveCount,
+    };
   } catch (error) {
     console.error(error);
     return null;
