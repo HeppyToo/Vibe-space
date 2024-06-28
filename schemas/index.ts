@@ -69,7 +69,7 @@ export const PostSchema = z.object({
     .string()
     .min(5, { message: "Minimum 5 characters." })
     .max(2200, { message: "Maximum 2,200 characters" }),
-  imageUrl: z.string(),
+  imageUrl: z.optional(z.string()),
   location: z
     .string()
     .min(1, { message: "This field is required" })
