@@ -1,9 +1,8 @@
 import {currentUser} from "@/lib/auth";
-
 import { NextResponse } from "next/server";
-
 import {db} from "@/lib/db";
 import {pusherServer} from "@/lib/pusher";
+
 
 interface IParams {
     conversationId?: string;
@@ -39,19 +38,19 @@ export async function DELETE(
                 id: conversationId,
                 users: {
                     some: {
-                        id: user.id
+                        userId: user.id
                     }
-                },
-            },
-        });
-
-        existingConversation.users.forEach((user) => {
-            if (user.email) {
-                pusherServer.trigger(user.email, 'conversation:remove', existingConversation);
+                }
             }
         });
 
-        return NextResponse.json(deletedConversation)
+        existingConversation.users.forEach((user: { userId: string; conversationId: string; }) => {
+            if (user.userId && user.conversationId) {
+                pusherServer.trigger(user.userId, 'conversation:remove', existingConversation);
+            }
+        });
+
+        return NextResponse.json(deletedConversation);
     } catch (error) {
         return NextResponse.json(null);
     }

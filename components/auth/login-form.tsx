@@ -26,11 +26,14 @@ import Link from "next/link";
 
 export const LoginForm = () => {
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/";
-  const urlError =
-    searchParams.get("error") === "OAuthAccountNotLinked"
+  const callbackUrl = searchParams
+    ? searchParams.get("callbackUrl") || "/"
+    : "/";
+  const urlError = searchParams
+    ? searchParams.get("error") === "OAuthAccountNotLinked"
       ? "Email already in use with different provider"
-      : "";
+      : ""
+    : "";
 
   const [showTwoFactor, setShowTwoFactor] = useState(false);
   const [error, setError] = useState<string | undefined>("");
@@ -149,8 +152,8 @@ export const LoginForm = () => {
               </>
             )}
           </div>
-          <FormError massage={error || urlError} />
-          <FormSuccess massage={success} />
+          <FormError message={error || urlError} />
+          <FormSuccess message={success} />
           <Button
             type="submit"
             className="w-full bg-muted-foreground/70 hover:border border-muted-foreground/70"

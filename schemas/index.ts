@@ -83,3 +83,10 @@ export const ReportSchema = z.object({
       .min(5, { message: "Minimum 5 characters." })
       .max(2200, { message: "Maximum 2,200 characters" }),
 })
+
+export const ConversationSchema = z.object({
+  message: z
+      .string()
+      .min(1, { message: "Message cannot be empty." })
+      .max(2200, { message: "Maximum 2,200 characters" }),
+})

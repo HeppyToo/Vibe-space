@@ -40,8 +40,9 @@ model User {
   SavedPost     SavedPost[]
 
   conversations UserConversation[]
-  seenMessages  SeenMessage[]
-  messages      Message[]
+  seenMessages  Message[]          @relation("Seen")
+
+  messages Message[]
 }
 
 model Account {
@@ -186,7 +187,7 @@ model SavedPost {
 }
 
 model Conversation {
-  id            String   @id @default(cuid())
+  id            String   @id @default(uuid())
   createdAt     DateTime @default(now())
   lastMessageAt DateTime @default(now())
   name          String?
@@ -197,41 +198,26 @@ model Conversation {
 }
 
 model Message {
-  id             String   @id @default(cuid())
-  body           String?
-  image          String?
-  createdAt      DateTime @default(now())
-  conversationId String
-  senderId       String
+  id        String   @id @default(uuid())
+  body      String?
+  image     String?
+  createdAt DateTime @default(now())
 
-  conversation Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  sender       User          @relation(fields: [senderId], references: [id], onDelete: Cascade)
-  seenMessages SeenMessage[]
+  seen User[] @relation("Seen")
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
 }
 
 model UserConversation {
-  id             String @id @default(cuid())
   userId         String
   conversationId String
-  email          String
 
   user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
   conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
-  @@unique([userId, conversationId])
-  @@index([userId])
-  @@index([conversationId])
-}
-
-model SeenMessage {
-  id        String @id @default(cuid())
-  userId    String
-  messageId String
-
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  message Message @relation(fields: [messageId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, messageId])
-  @@index([userId])
-  @@index([messageId])
+  @@id([userId, conversationId])
 }

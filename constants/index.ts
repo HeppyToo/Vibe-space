@@ -1,13 +1,10 @@
 import React from "react";
 
 import { IoMdHome } from "react-icons/io";
-import { FaRegHeart } from "react-icons/fa";
-import { FiActivity } from "react-icons/fi";
 import { IoMdSearch } from "react-icons/io";
 import { FaRegCompass } from "react-icons/fa6";
 import { CiSaveDown2 } from "react-icons/ci";
 import { IoIosSettings } from "react-icons/io";
-import { LuClapperboard } from "react-icons/lu";
 import { RiMessengerLine } from "react-icons/ri";
 import { IoMdAddCircleOutline } from "react-icons/io";
 
@@ -35,7 +32,7 @@ export const sidebarLinks: SidebarLink[] = [
   },
   {
     Icon: RiMessengerLine,
-    route: "/messages",
+    route: "/conversations",
     label: "Messages",
   },
   {

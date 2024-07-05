@@ -1,4 +1,3 @@
-
 import { getAllUsers } from "@/data/users";
 import UserList from "./_components/user-list";
 

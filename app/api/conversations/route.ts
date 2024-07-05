@@ -1,29 +1,20 @@
-import {currentUser} from "@/lib/auth";
+import { currentUser } from "@/lib/auth";
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db";
+import { pusherServer } from "@/lib/pusher";
 
-import {NextResponse} from "next/server";
-
-import {db} from "@/lib/db";
-import {pusherServer} from "@/lib/pusher";
-
-export async function POST(
-    request: Request,
-) {
+export async function POST(request: Request) {
   try {
     const user = await currentUser();
     const body = await request.json();
-    const {
-      userId,
-      isGroup,
-      members,
-      name
-    } = body;
+    const { userId, isGroup, members, name } = body;
 
     if (!user?.id || !user?.email) {
-      return new NextResponse('Unauthorized', { status: 400 });
+      return new NextResponse("Unauthorized", { status: 400 });
     }
 
     if (isGroup && (!members || members.length < 2 || !name)) {
-      return new NextResponse('Invalid data', { status: 400 });
+      return new NextResponse("Invalid data", { status: 400 });
     }
 
     if (isGroup) {
@@ -32,25 +23,29 @@ export async function POST(
           name,
           isGroup,
           users: {
-            connect: [
+            create: [
               ...members.map((member: { value: string }) => ({
-                id: member.value
+                user: { connect: { id: member.value } },
               })),
               {
-                id: user.id
-              }
-            ]
-          }
+                user: { connect: { id: user.id } },
+              },
+            ],
+          },
         },
         include: {
-          users: true,
-        }
+          users: {
+            include: {
+              user: true,
+            },
+          },
+        },
       });
 
       // Update all connections with new conversation
-      newConversation.users.forEach((user ) => {
+      newConversation.users.forEach(({ user }) => {
         if (user.email) {
-          pusherServer.trigger(user.email, 'conversation:new', newConversation);
+          pusherServer.trigger(user.email, "conversation:new", newConversation);
         }
       });
 
@@ -59,27 +54,26 @@ export async function POST(
 
     const existingConversations = await db.conversation.findMany({
       where: {
-        OR: [
-          {
-            users: {
-              some: {
-                id: {
-                  in: [user.id, userId]
-                }
-              }
-            }
+        users: {
+          some: {
+            userId: user.id,
           },
-          {
-            users: {
-              some: {
-                id: {
-                  in: [userId, user.id]
-                }
-              }
-            }
-          }
-        ]
-      }
+        },
+        AND: {
+          users: {
+            some: {
+              userId: userId,
+            },
+          },
+        },
+      },
+      include: {
+        users: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
 
     const singleConversation = existingConversations[0];
@@ -91,30 +85,34 @@ export async function POST(
     const newConversation = await db.conversation.create({
       data: {
         users: {
-          connect: [
+          create: [
             {
-              id: user.id
+              user: { connect: { id: user.id } },
             },
             {
-              id: userId
-            }
-          ]
-        }
+              user: { connect: { id: userId } },
+            },
+          ],
+        },
       },
       include: {
-        users: true
-      }
+        users: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
 
     // Update all connections with new conversation
-    newConversation.users.map((user) => {
+    newConversation.users.forEach(({ user }) => {
       if (user.email) {
-        pusherServer.trigger(user.email, 'conversation:new', newConversation);
+        pusherServer.trigger(user.email, "conversation:new", newConversation);
       }
     });
 
-    return NextResponse.json(newConversation)
+    return NextResponse.json(newConversation);
   } catch (error) {
-    return new NextResponse('Internal Error', { status: 500 });
+    return new NextResponse("Internal Error", { status: 500 });
   }
 }

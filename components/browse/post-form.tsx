@@ -61,6 +61,10 @@ export const PostForm = ({ action, post }: PostFormProps) => {
 
     let uploadedImageUrl = value.imageUrl;
 
+    if (uploadedImageUrl === undefined) {
+      uploadedImageUrl = "";
+    }
+
     if (!user || !user.email) {
       setError("User or user email is not defined");
       setIsSubmitting(false);
