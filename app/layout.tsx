@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { SessionProvider } from "next-auth/react";
 import { auth } from "@/auth";
 import React from "react";
+import ActiveStatus from "@/components/active-status";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,7 +35,8 @@ export default async function RootLayout({
             storageKey="vibeSpace-them"
           >
             <Toaster />
-            {children}
+              {/*<ActiveStatus />*/}
+              {children}
           </ThemeProvider>
         </body>
       </html>

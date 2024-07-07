@@ -87,6 +87,6 @@ export const ReportSchema = z.object({
 export const ConversationSchema = z.object({
   message: z
       .string()
-      .min(1, { message: "Message cannot be empty." })
       .max(2200, { message: "Maximum 2,200 characters" }),
+  imageUrl: z.optional(z.string()),
 })

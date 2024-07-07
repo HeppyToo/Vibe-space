@@ -14,7 +14,7 @@ import {
     DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {toast} from "sonner";
+import { toast } from "sonner";
 import useConversation from "@/hooks/use-conversation";
 
 interface ConfirmModalProps {
@@ -23,33 +23,32 @@ interface ConfirmModalProps {
 }
 
 const ConfirmModal: React.FC<ConfirmModalProps> = ({
-                                                       isOpen,
+                                                       isOpen = false,
                                                        onClose
                                                    }) => {
     const router = useRouter();
     const { conversationId } = useConversation();
     const [isLoading, setIsLoading] = useState(false);
 
-    const onDelete = useCallback(() => {
+    const onDelete = useCallback(async () => {
         setIsLoading(true);
-
-        axios.delete(`/api/conversations/${conversationId}`)
-            .then(() => {
-                onClose();
-                router.push('/conversations');
-                router.refresh();
-            })
-            .catch(() => toast.error('Something went wrong!'))
-            .finally(() => setIsLoading(false));
+        try {
+            await axios.delete(`/api/conversations/${conversationId}`);
+            onClose();
+            router.push('/conversations');
+            router.refresh();
+        } catch (error) {
+            toast.error('Something went wrong!');
+        } finally {
+            setIsLoading(false);
+        }
     }, [router, conversationId, onClose]);
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent>
+            <DialogContent className="bg-[#1f1f1f] border-slate-600/40">
                 <DialogHeader>
-                    <DialogTitle>
-                        Delete conversation
-                    </DialogTitle>
+                    <DialogTitle>Delete conversation</DialogTitle>
                     <DialogDescription>
                         Are you sure you want to delete this conversation? This action cannot be undone.
                     </DialogDescription>
@@ -57,19 +56,19 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                 <div className="sm:flex sm:items-start">
                     <div
                         className="
-              mx-auto
-              flex
-              h-12
-              w-12
-              flex-shrink-0
-              items-center
-              justify-center
-              rounded-full
-              bg-red-100
-              sm:mx-0
-              sm:h-10
-              sm:w-10
-            "
+                            mx-auto
+                            flex
+                            h-12
+                            w-12
+                            flex-shrink-0
+                            items-center
+                            justify-center
+                            rounded-full
+                            bg-red-100
+                            sm:mx-0
+                            sm:h-10
+                            sm:w-10
+                        "
                     >
                         <FiAlertTriangle
                             className="h-6 w-6 text-red-600"
@@ -78,12 +77,12 @@ const ConfirmModal: React.FC<ConfirmModalProps> = ({
                     </div>
                     <div
                         className="
-              mt-3
-              text-center
-              sm:ml-4
-              sm:mt-0
-              sm:text-left
-            "
+                            mt-3
+                            text-center
+                            sm:ml-4
+                            sm:mt-0
+                            sm:text-left
+                        "
                     >
                         <p className="text-sm text-gray-500">
                             Are you sure you want to delete this conversation? This action cannot be undone.

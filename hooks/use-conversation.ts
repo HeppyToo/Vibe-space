@@ -5,12 +5,12 @@ const useConversation = () => {
     const params = useParams();
 
     const conversationId = useMemo(() => {
-        if (!params?.conversationId) {
+        if (!params?.conversationsId) {
             return '';
         }
 
-        return params.conversationId as string;
-    }, [params?.conversationId]);
+        return params.conversationsId as string;
+    }, [params?.conversationsId]);
 
     const isOpen = useMemo(() => !!conversationId, [conversationId]);
 

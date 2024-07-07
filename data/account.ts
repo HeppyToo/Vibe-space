@@ -14,10 +14,6 @@ export const getAccountByUserId = async (userId: string) : Promise<Account | nul
       },
     });
 
-    if (!account) {
-      console.warn(`No account found for userId: ${userId}`);
-    }
-
     return account;
   } catch (error){
     console.error(`Error fetching account for userId: ${userId}`, error);

@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
+import React, { useState, useCallback } from "react";
 import * as z from "zod";
-import { HiPaperAirplane, HiPhoto } from "react-icons/hi2";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import useConversation from "@/hooks/use-conversation";
 import { ConversationSchema } from "@/schemas";
@@ -11,16 +11,23 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CiLocationOn } from "react-icons/ci";
 import { Input } from "@/components/ui/input";
-import {BsEmojiAngry, BsEmojiSmile} from "react-icons/bs";
+import { CiHeart } from "react-icons/ci";
+import { BsEmojiSmile } from "react-icons/bs";
+import { ImageUploaderMessage } from "@/app/(browse)/conversations/[conversationsId]/_components/image-uploader-message";
+import { useUploadThing } from "@/lib/uploadthing";
+import { Button } from "@/components/ui/button";
+import { GoPaperAirplane } from "react-icons/go";
 
-export const FormConversation = () => {
+export const FormConversation: React.FC = () => {
   const { conversationId } = useConversation();
+  const { startUpload } = useUploadThing("imageUploader");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [files, setFiles] = useState<File[]>([]);
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const form = useForm<z.infer<typeof ConversationSchema>>({
     resolver: zodResolver(ConversationSchema),
@@ -29,98 +36,102 @@ export const FormConversation = () => {
     },
   });
 
-  // const onSubmit: SubmitHandler<FieldValues> = (data) => {
-  //     setValue('message', '', { shouldValidate: true });
-  //     axios.post('/api/messages', {
-  //         ...data,
-  //         conversationId: conversationId
-  //     })
-  // }
+  const onSubmit = useCallback(async (value: z.infer<typeof ConversationSchema>) => {
+    setIsSubmitting(true);
+    let uploadedImageUrl = imageUrl;
 
-  // const handleUpload = (result: any) => {
-  //     axios.post('/api/messages', {
-  //         image: result.info.secure_url,
-  //         conversationId: conversationId
-  //     })
-  // }
+    if (files.length > 0) {
+      const uploadedImages = await startUpload(files);
+      if (uploadedImages) {
+        uploadedImageUrl = uploadedImages[0].url;
+      }
+    }
+
+    const submissionData = {
+      ...value,
+      conversationId,
+      image: uploadedImageUrl,
+    };
+
+    try {
+      await axios.post("/api/messages", submissionData);
+      form.reset();
+      setFiles([]);
+      setImageUrl("");
+    } catch (error) {
+      console.error("Error sending message:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [conversationId, form, files, imageUrl, startUpload]);
+
+  const sendHeartMessage = useCallback(async () => {
+    setIsSubmitting(true);
+
+    const submissionData = {
+      message: "❤️",
+      conversationId,
+      image: "",
+    };
+
+    try {
+      await axios.post("/api/messages", submissionData);
+      form.reset();
+    } catch (error) {
+      console.error("Error sending heart message:", error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [conversationId, form]);
+
+  const handleImageUpload = useCallback((url: string) => {
+    setImageUrl(url);
+  }, []);
 
   return (
-    <Form {...form}>
-      <form className="p-5">
-        <div>
+      <Form {...form}>
+        <form className="px-6 pb-6" onSubmit={form.handleSubmit(onSubmit)}>
           <div>
             <FormField
-              control={form.control}
-              name="message"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <div className="relative flex items-center justify-center w-full">
-                      <BsEmojiSmile className="absolute left-2 w-6 h-6" />
-                      <Input
-                        type="text"
-                        placeholder="Massagess..."
-                        className="pl-11 py-5 my-5s"
-                        {...field}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage className="text-red-500" />
-                </FormItem>
-              )}
+                control={form.control}
+                name="message"
+                render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormControl>
+                        <div className="relative flex items-center justify-center w-full">
+                          <BsEmojiSmile className="absolute left-2 w-6 h-6" />
+                          <Input
+                              type="text"
+                              placeholder="Messages..."
+                              className="pl-11 pr-10 py-5 w-full"
+                              autoComplete="off"
+                              {...field}
+                              disabled={isSubmitting}
+                          />
+                          <div className="absolute right-2 flex items-center space-x-2 pr-2">
+                            <CiHeart className="w-6 h-6 cursor-pointer" onClick={sendHeartMessage} />
+                            <ImageUploaderMessage
+                                onFieldChange={handleImageUpload}
+                                imageUrl={imageUrl}
+                                setFiles={setFiles}
+                            />
+                            <Button
+                                variant="outline"
+                                type="submit"
+                                className="text-white px-4 py-2 rounded-md border-0"
+                                disabled={isSubmitting}
+                            >
+                              <GoPaperAirplane className="h-5 w-6" />
+                            </Button>
+                          </div>
+                        </div>
+                      </FormControl>
+                      <FormMessage className="text-red-500" />
+                    </FormItem>
+                )}
             />
           </div>
-        </div>
-      </form>
-    </Form>
-    //   <div
-    //       className="
-    //   py-4
-    //   px-4
-    //   bg-white
-    //   border-t
-    //   flex
-    //   items-center
-    //   gap-2
-    //   lg:gap-4
-    //   w-full
-    // "
-    //   >
-    //       <CldUploadButton
-    //           options={{ maxFiles: 1 }}
-    //           onUpload={handleUpload}
-    //           uploadPreset="zbhgu6ih"
-    //       >
-    //           <HiPhoto size={30} className="text-sky-500" />
-    //       </CldUploadButton>
-    //       <form
-    //           onSubmit={handleSubmit(onSubmit)}
-    //           className="flex items-center gap-2 lg:gap-4 w-full"
-    //       >
-    //           <MessageInput
-    //               id="message"
-    //               register={register}
-    //               errors={errors}
-    //               required
-    //               placeholder="Write a message"
-    //           />
-    //           <button
-    //               type="submit"
-    //               className="
-    //       rounded-full
-    //       p-2
-    //       bg-sky-500
-    //       cursor-pointer
-    //       hover:bg-sky-600
-    //       transition
-    //     "
-    //           >
-    //               <HiPaperAirplane
-    //                   size={18}
-    //                   className="text-white"
-    //               />
-    //           </button>
-    //       </form>
-    //   </div>
+        </form>
+      </Form>
   );
 };
