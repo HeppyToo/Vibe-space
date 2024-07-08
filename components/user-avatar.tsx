@@ -28,8 +28,6 @@ const UserAvatar = ({ user }: AvatarProps) => {
     const { members } = useActiveList();
     const isActive = members.indexOf(user?.email!) !== -1;
 
-    console.log(isActive)
-
     return (
         <div className="relative inline-block"> {/* Wrap Avatar and active icon in a relative container */}
             <Avatar className="w-10 h-10 ml-2">

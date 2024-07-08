@@ -14,6 +14,10 @@ export const NewVerificationForm = () => {
 
   const searchParams = useSearchParams();
 
+  if(!searchParams) {
+    return null
+  }
+
   const token = searchParams.get("token");
 
   const onSubmit = useCallback(() => {
@@ -50,8 +54,8 @@ export const NewVerificationForm = () => {
     >
       <div className="flex items-center w-full justify-center">
         {!success && !error && <BeatLoader color="white" />}
-        {!success && <FormError massage={error} />}
-        <FormSuccess massage={success} />
+        {!success && <FormError message={error} />}
+        <FormSuccess message={success} />
       </div>
     </CardWrapper>
   );

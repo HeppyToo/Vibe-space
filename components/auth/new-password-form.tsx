@@ -25,6 +25,11 @@ import { newPassword } from "@/action/new-password";
 
 export const NewPasswordForm = () => {
   const searchParams = useSearchParams();
+
+  if (!searchParams) {
+    return null;
+  }
+
   const token = searchParams.get("token");
 
   const [error, setError] = useState<string | undefined>("");
@@ -79,8 +84,8 @@ export const NewPasswordForm = () => {
               )}
             />
           </div>
-          <FormError massage={error} />
-          <FormSuccess massage={success} />
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <Button
             type="submit"
             className="w-full bg-muted-foreground/70 hover:border border-muted-foreground/70"

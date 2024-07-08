@@ -75,8 +75,8 @@ export const ResetForm = () => {
               )}
             />
           </div>
-          <FormError massage={error} />
-          <FormSuccess massage={success} />
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <Button
             type="submit"
             className="w-full bg-muted-foreground/70 hover:border border-muted-foreground/70"

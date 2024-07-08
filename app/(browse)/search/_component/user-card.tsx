@@ -2,11 +2,11 @@ import Link from "next/link";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import React from "react";
-import { Author } from "@/types";
 import FollowButton from "@/app/(browse)/profile/_component/follow-button";
+import {User} from "@prisma/client";
 
 interface UserCardProps {
-  user: Author;
+  user: User;
 }
 
 export const UserCard: React.FC<UserCardProps> = ({ user }) => {
@@ -34,6 +34,7 @@ export const UserCard: React.FC<UserCardProps> = ({ user }) => {
         </div>
       </Link>
 
+      {/*// @ts-ignore*/}
       <FollowButton userId={user.id} isFollowing={user.isFollowing || false} />
     </div>
   );

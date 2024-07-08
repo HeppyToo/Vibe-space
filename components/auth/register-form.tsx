@@ -114,8 +114,8 @@ export const RegisterForum = () => {
               )}
             />
           </div>
-          <FormError massage={error} />
-          <FormSuccess massage={success} />
+          <FormError message={error} />
+          <FormSuccess message={success} />
           <Button
             type="submit"
             className="w-full bg-muted-foreground/70"

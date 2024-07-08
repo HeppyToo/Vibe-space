@@ -9,7 +9,8 @@ const nextConfig = {
                 port: ''
             }
         ]
-    }
+    },
+    transpilePackages: ['next-auth']
 }
 
 export default nextConfig;
