@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaUser } from "react-icons/fa";
 import Link from "next/link";
 import {getRecommended} from "@/data/recomended";
-import {UserRole} from "@prisma/client";
-import FollowButton from "@/app/(browse)/profile/_component/follow-button";
 
 export const RecommendedUsers = async () => {
     const users =await getRecommended();

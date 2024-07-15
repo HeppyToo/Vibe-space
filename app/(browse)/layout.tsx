@@ -12,8 +12,7 @@ const BrowseLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
   return (
     <>
       <div className="md:flex h-full">
-          {/*TODO FIX THIS*/}
-        {/*<ActiveStatus />*/}
+        <ActiveStatus />
         <Sidebar />
         <Container>{children}</Container>
       </div>

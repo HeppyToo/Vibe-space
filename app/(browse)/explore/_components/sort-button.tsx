@@ -1,98 +1,65 @@
-import { FaArrowDown } from "react-icons/fa6";
-import { FaArrowUp } from "react-icons/fa6";
-import { CiHeart } from "react-icons/ci";
-import { CiBookmark } from "react-icons/ci";
+"use client";
 
-import { Button } from "@/components/ui/button"
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuGroup,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuShortcut,
-    DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {CiFilter} from "react-icons/ci";
-import React from "react";
-import {Post} from "@/types";
+import { CiSearch } from "react-icons/ci";
+import { Post } from "@/types";
+import React, { useState, useMemo } from "react";
+import { Search } from "@/components/browse/search";
+import { GridPostList } from "@/components/browse/grid-post-list";
 
-
-interface SortButtonProps {
-    posts: Post[];
-    setPosts: React.Dispatch<React.SetStateAction<Post[]>>;
+interface ClientCardComponentProps {
+  posts: Post[];
 }
 
-export function SortButton({ posts, setPosts }: SortButtonProps) {
-    function sortPostsByLikes() {
-        const sortedPosts = [...posts].sort((a, b) => (b.likeCount ?? 0) - (a.likeCount ?? 0));
-        setPosts(sortedPosts);
-    }
-    
-    function sortPostsBySaved() {
-        const sortedPosts = [...posts].sort((a, b) => (b.saveCount ?? 0) - (a.saveCount ?? 0));
-        setPosts(sortedPosts);
-    }
+function SortButton(props: {
+  setPosts: (value: ((prevState: Post[]) => Post[]) | Post[]) => void;
+  posts: Post[];
+}) {
+  return null;
+}
 
-    function sortPostsByDateDescending() {
-        const sortedPosts = [...posts].sort(
-            (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setPosts(sortedPosts);
-    }
+export const PostCardComponent: React.FC<ClientCardComponentProps> = ({ posts }) => {
+    const [searchQuery, setSearchQuery] = useState("");
+    const [sortedPosts, setSortedPosts] = useState(posts);
 
-    function sortPostsByDateAscending() {
-        const sortedPosts = [...posts].sort(
-            (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-        setPosts(sortedPosts);
-    }
+    const filteredPosts = useMemo(() => {
+        return sortedPosts.filter((post: Post) => {
+            const name = post.content ? post.content.toLowerCase() : '';
+            const tags = post.tags.join(" ").toLowerCase();
+
+            return name.includes(searchQuery.toLowerCase()) || tags.includes(searchQuery.toLowerCase());
+        });
+    }, [searchQuery, sortedPosts]);
 
     return (
-        <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="gap-x-2">
-                    <p className="text-[14px] font-medium leading-[140%] md:text-[16px] text-white">
-                        All
-                    </p>
-                    <CiFilter className="h-5 w-5" />
-                </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-56 bg-[#1f1f1f] border-slate-600/40 text-white">
-                <DropdownMenuLabel>Sort by</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                    <DropdownMenuItem onClick={sortPostsByDateAscending}>
-                        <div className="flex">
-                            <FaArrowUp className="mr-2 h-4 w-4" />
-                            <span>Old</span>
-                        </div>
-                        <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={sortPostsByDateDescending}>
-                        <div className="flex">
-                            <FaArrowDown className="mr-2 h-4 w-4" />
-                            <span>New</span>
-                        </div>
-                        <DropdownMenuShortcut>⌘B</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={sortPostsByLikes}>
-                        <div className="flex">
-                            <CiHeart className="mr-2 h-4 w-4" />
-                            <span>Likes</span>
-                        </div>
-                        <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem onClick={sortPostsBySaved}>
-                        <div className="flex">
-                            <CiBookmark className="mr-2 h-4 w-4" />
-                            <span>Saved</span>
-                        </div>
-                        <DropdownMenuShortcut>⌘K</DropdownMenuShortcut>
-                    </DropdownMenuItem>
-                </DropdownMenuGroup>
-            </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+            <div className="max-w-5xl flex flex-col items-center w-full gap-6 md:gap-9">
+                <h2 className="text-[24px] font-bold leading-[140%] tracking-tighter md:text-[30px]">
+                    Search Posts
+                </h2>
+                <div className="relative flex gap-1 w-full rounded-lg">
+                    <CiSearch className="absolute top-0 left-0 ml-6 mt-3 w-4 h-4" />
+                    <Search
+                        value={searchQuery}
+                        setValue={setSearchQuery}
+                        filterFunction={() => filteredPosts} // Adjusted to avoid TS2741 error
+                        className="w-full px-0"
+                    />
+                </div>
+            </div>
+
+            <div className="flex justify-between w-full max-w-5xl mt-8 mb-7">
+                <h3 className="text-[18px] font-bold leading-[140%] md:text-[24px] md:tracking-tighter">
+                    Popular Today
+                </h3>
+
+                <div className="flex justify-center items-center gap-3 bg-dark-3 rounded-xl px-4 py-2 cursor-pointer">
+                    <SortButton posts={sortedPosts} setPosts={setSortedPosts} />
+                </div>
+            </div>
+
+            <div className="flex flex-wrap gap-9 w-full max-w-5xl">
+                <GridPostList posts={filteredPosts} />
+            </div>
+        </>
     );
-}
+};

@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import { useIsClient, useMediaQuery } from "usehooks-ts";
 import { cn } from "@/lib/utils";
-import { useSidebar } from "@/store/use-sidebar";
+import { useSidebar } from "@/hooks/use-sidebar";
 import { BeatLoader } from "react-spinners";
 import { usePathname } from "next/navigation";
 
@@ -18,7 +18,7 @@ export const Container = ({ children }: ContainerProps) => {
   const { collapsed, onCollapse, onExpand } = useSidebar((state) => state);
 
   useEffect(() => {
-    if (pathname === '/conversations' || pathname?.startsWith('/conversations/')) {
+    if (pathname === "/conversations" || pathname?.startsWith("/conversations/")) {
       onCollapse();
     } else if (matches) {
       onExpand();

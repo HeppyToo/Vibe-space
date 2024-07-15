@@ -5,21 +5,20 @@ import {pusherServer} from "@/lib/pusher";
 
 
 export default async function handler(
-    request: NextApiRequest,
-    response: NextApiResponse
+    req: NextApiRequest, res: NextApiResponse
 ) {
-    const session = await auth(request, response);
+    const session = await auth(req, res)
 
     if (!session?.user?.email) {
-        return response.status(401);
+        return res.status(401);
     }
 
-    const socketId = request.body.socket_id;
-    const channel = request.body.channel_name;
+    const socketId = req.body.socket_id;
+    const channel = req.body.channel_name;
     const data = {
         user_id: session.user.email,
     };
 
     const authResponse = pusherServer.authorizeChannel(socketId, channel, data);
-    return response.send(authResponse);
+    return res.send(authResponse);
 };
