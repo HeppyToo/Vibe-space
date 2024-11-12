@@ -1,0 +1,41 @@
+// posts.prisma
+model Post {
+  id        String      @id @default(cuid())
+  content   String
+  location  String
+  tags      String[]
+  imageUrl  String      @db.Text
+  published Boolean     @default(false)
+  authorId  String
+  author    User        @relation(fields: [authorId], references: [id])
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  Like      Like[]
+  SavedPost SavedPost[]
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post       Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}
+
+model SavedPost {
+  id        String   @id @default(cuid())
+  userId    String
+  postId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user       User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post       Post    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  @@unique([userId, postId])
+  @@index([userId])
+  @@index([postId])
+}

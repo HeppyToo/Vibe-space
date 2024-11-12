@@ -1,0 +1,29 @@
+model Conversation {
+  id            String   @id @default(uuid())
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
+  messages      Message[]
+  users         UserConversation[]
+}
+
+model Message {
+  id             String   @id @default(uuid())
+  body           String?
+  image          String?
+  createdAt      DateTime @default(now())
+  seen           User[]   @relation("Seen")
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
+
+model UserConversation {
+  userId         String
+  conversationId String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  @@id([userId, conversationId])
+}

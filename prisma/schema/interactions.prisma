@@ -1,0 +1,33 @@
+model Follow {
+  id          String @id @default(cuid())
+  followerId  String
+  followingId String
+  follower    User   @relation(name: "Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation(name: "FollowedBy", fields: [followingId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  @@unique([followerId, followingId])
+  @@index([followerId])
+  @@index([followingId])
+}
+
+model Block {
+  id        String @id @default(cuid())
+  blockerId String
+  blockedId String
+  blocker   User   @relation(name: "Blocking", fields: [blockerId], references: [id], onDelete: Cascade)
+  blocked   User   @relation(name: "BlockedBy", fields: [blockedId], references: [id], onDelete: Cascade)
+  @@unique([blockerId, blockedId])
+  @@index([blockerId])
+  @@index([blockedId])
+}
+
+model ReportContent {
+  id          String   @id @default(cuid())
+  reporterId  String
+  description String
+  status      String   @default("PENDING")
+  reporter    User     @relation(fields: [reporterId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
