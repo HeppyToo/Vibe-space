@@ -1,12 +1,15 @@
 import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import Credentials from "next-auth/providers/credentials";
+import bcrypt from "bcryptjs";
 
 import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
-import { getUserById } from "@/data/user";
+import { getUserById, getUserByEmail } from "@/data/user";
 import { UserRole } from "@prisma/client";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
 import { getAccountByUserId } from "@/data/account";
+import { LoginSchema } from "@/schemas";
 
 export const {
   handlers: { GET, POST },
@@ -33,9 +36,7 @@ export const {
     async signIn({ user, account }) {
       if (account?.provider !== "credentials") return true;
 
-      if (!user.id) {
-        return false;
-      }
+      if (!user.id) return false;
 
       const existingUser = await getUserById(user.id);
 
@@ -96,4 +97,25 @@ export const {
   adapter: PrismaAdapter(db),
   session: { strategy: "jwt" },
   ...authConfig,
+  providers: [
+    ...authConfig.providers,
+    Credentials({
+      async authorize(credentials) {
+        const validateFields = LoginSchema.safeParse(credentials);
+
+        if (validateFields.success) {
+          const { email, password } = validateFields.data;
+
+          const user = await getUserByEmail(email);
+          if (!user || !user.password) return null;
+
+          const passwordMatch = await bcrypt.compare(password, user.password);
+
+          if (passwordMatch) return user;
+        }
+
+        return null;
+      },
+    }),
+  ],
 });
